@@ -52,11 +52,11 @@ public class GoldenChorusFruitItem extends Item {
         ItemStack is = super.finishUsing(stack, world, user);
         if (world.isClient) return is;
         BlockPos targetChorusLink = ChorusLinksUtils.doChorusFruitConsume(stack, world, user);
-        if (!ChorusLinksUtils.doesBoundPosEqualBlockPos(stack, targetChorusLink)) {
-            stack.removeSubTag(GOLDEN_CHORUS_BIND_POS_TAG);
-            stack.removeSubTag(GOLDEN_CHORUS_BIND_DIM_TAG);
-        }
         if (targetChorusLink != null) {
+            if (!ChorusLinksUtils.doesBoundPosEqualBlockPos(stack, targetChorusLink)) {
+                stack.removeSubTag(GOLDEN_CHORUS_BIND_POS_TAG);
+                stack.removeSubTag(GOLDEN_CHORUS_BIND_DIM_TAG);
+            }
             ChorusLinksUtils.doChorusLinkTeleport(stack, world, user, targetChorusLink);
         } else {
             Items.CHORUS_FRUIT.finishUsing(stack, world, user);

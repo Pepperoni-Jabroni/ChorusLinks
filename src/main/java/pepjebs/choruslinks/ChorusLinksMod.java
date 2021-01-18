@@ -24,7 +24,11 @@ public class ChorusLinksMod implements ModInitializer {
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "golden_chorus_fruit"),
-                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.FOOD)));
+                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.FOOD), 8));
+        Registry.register(
+                Registry.ITEM,
+                new Identifier(MOD_ID, "enchanted_golden_chorus_fruit"),
+                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.FOOD), 16));
         Block chorus_link = Registry.register(
                 Registry.BLOCK,
                 new Identifier(MOD_ID, "chorus_link"),

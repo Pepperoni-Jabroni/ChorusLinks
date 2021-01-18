@@ -1,18 +1,28 @@
 package pepjebs.choruslinks.item;
 
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import pepjebs.choruslinks.ChorusLinksMod;
 import pepjebs.choruslinks.utils.ChorusLinksUtils;
 
+import java.util.List;
+
 public class GoldenChorusFruitItem extends Item {
-    public GoldenChorusFruitItem(Settings settings) {
+
+    private final int radiusMultiplier;
+
+    public GoldenChorusFruitItem(Settings settings, int radiusMultiplier1) {
         super(settings);
+        this.radiusMultiplier = radiusMultiplier1;
     }
 
     @Override
@@ -39,4 +49,20 @@ public class GoldenChorusFruitItem extends Item {
         }
         return is;
     }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+        tooltip.set(0, new LiteralText(tooltip.get(0).getString()).formatted(Formatting.AQUA));
+        if (hasGlint(stack)) {
+            tooltip.set(0, new LiteralText(tooltip.get(0).getString()).formatted(Formatting.LIGHT_PURPLE));
+        }
+    }
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return stack.getItem().getTranslationKey().contains("enchanted");
+    }
+
+    public int getRadiusMultiplier() { return radiusMultiplier; }
 }

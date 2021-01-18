@@ -13,6 +13,16 @@ public class ChorusLinksUtils {
 
     public static int CHORUS_LINK_RADIUS = 64;
 
+    public static BlockPos doChorusFruitConsume(ItemStack stack, World world, LivingEntity user) {
+        if (stack.getItem() instanceof GoldenChorusFruitItem && stack.hasGlint()
+                && stack.getOrCreateTag().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BINDING_TAG)) {
+            int[] blockPos = stack.getOrCreateTag().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BINDING_TAG);
+            if (blockPos.length == 3)
+                return new BlockPos(blockPos[0], blockPos[1], blockPos[2]);
+        }
+        return doChorusLinkSearch(stack, world, user);
+    }
+
     public static BlockPos doChorusLinkSearch(ItemStack stack, World world, LivingEntity user) {
         BlockPos nearestChorusLink = null;
         double nearestSoFar = Double.MAX_VALUE;

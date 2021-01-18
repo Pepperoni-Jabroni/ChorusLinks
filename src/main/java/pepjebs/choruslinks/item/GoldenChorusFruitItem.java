@@ -50,7 +50,7 @@ public class GoldenChorusFruitItem extends Item {
         ItemStack is = super.finishUsing(stack, world, user);
         if (world.isClient) return is;
         ChorusLinksMod.LOGGER.info("Consumed Golden Chorus Fruit...");
-        BlockPos targetChorusLink = ChorusLinksUtils.doChorusLinkSearch(stack, world, user);
+        BlockPos targetChorusLink = ChorusLinksUtils.doChorusFruitConsume(stack, world, user);
         if (targetChorusLink != null) {
             user.teleport(targetChorusLink.getX() + 0.5,
                     targetChorusLink.getY() + 1,

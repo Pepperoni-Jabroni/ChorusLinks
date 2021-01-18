@@ -1,5 +1,7 @@
 {
    "item.chorus_links.golden_chorus_fruit": "Golden Chorus Fruit",
    "item.chorus_links.enchanted_golden_chorus_fruit": "Enchanted Golden Chorus Fruit",
-   "block.chorus_links.chorus_link": "Chorus Link"
+   "block.chorus_links.chorus_link": "Chorus Link",
+   "item.chorus_links.tooltip.golden_chorus_fruit.unbound": "Unbound",
+   "item.chorus_links.tooltip.golden_chorus_fruit.bound": "Bound to (%d, %d, %d)"
 }

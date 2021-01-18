@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "chorus_links:block/chorus_link" }
+  }
+}

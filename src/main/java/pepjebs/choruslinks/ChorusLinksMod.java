@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
 public class ChorusLinksMod implements ModInitializer {
@@ -27,7 +28,7 @@ public class ChorusLinksMod implements ModInitializer {
         Block chorus_link = Registry.register(
                 Registry.BLOCK,
                 new Identifier(MOD_ID, "chorus_link"),
-                new Block(FabricBlockSettings.of(Material.METAL)));
+                new ChorusLinkBlock(FabricBlockSettings.of(Material.METAL)));
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "chorus_link"),

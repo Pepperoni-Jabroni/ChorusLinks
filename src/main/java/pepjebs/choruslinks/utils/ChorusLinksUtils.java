@@ -18,9 +18,10 @@ public class ChorusLinksUtils {
 
     public static BlockPos doChorusFruitConsume(ItemStack stack, World world, LivingEntity user) {
         if (stack.getItem() instanceof GoldenChorusFruitItem && stack.hasGlint()
-                && stack.getOrCreateTag().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BINDING_TAG)) {
-            int[] blockPos = stack.getOrCreateTag().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BINDING_TAG);
-            if (blockPos.length == 3)
+                && stack.getOrCreateTag().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG)) {
+            int[] blockPos = stack.getOrCreateTag().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG);
+            String boundDim = stack.getOrCreateTag().getString(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_DIM_TAG);
+            if (blockPos.length == 3 && boundDim.compareTo(world.getRegistryKey().getValue().toString()) == 0)
                 return new BlockPos(blockPos[0], blockPos[1], blockPos[2]);
         }
         return doChorusLinkSearch(stack, world, user);

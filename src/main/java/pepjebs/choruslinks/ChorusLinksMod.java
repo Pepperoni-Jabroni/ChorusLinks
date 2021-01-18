@@ -8,6 +8,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,11 +25,11 @@ public class ChorusLinksMod implements ModInitializer {
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "golden_chorus_fruit"),
-                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.FOOD), 8));
+                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.RARE), 8));
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "enchanted_golden_chorus_fruit"),
-                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.FOOD), 16));
+                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.EPIC), 16));
         Block chorus_link = Registry.register(
                 Registry.BLOCK,
                 new Identifier(MOD_ID, "chorus_link"),

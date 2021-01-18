@@ -62,9 +62,7 @@ public class GoldenChorusFruitItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
-        tooltip.set(0, new LiteralText(tooltip.get(0).getString()).formatted(Formatting.AQUA));
         if (hasGlint(stack)) {
-            tooltip.set(0, new LiteralText(tooltip.get(0).getString()).formatted(Formatting.LIGHT_PURPLE));
             if (stack.getOrCreateTag().contains(GOLDEN_CHORUS_BINDING_TAG)) {
                 int[] blockPos = stack.getOrCreateTag().getIntArray(GOLDEN_CHORUS_BINDING_TAG);
                 if (blockPos.length == 3) {

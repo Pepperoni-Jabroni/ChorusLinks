@@ -3,12 +3,8 @@ package pepjebs.choruslinks.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -55,6 +51,8 @@ public class GoldenChorusFruitItem extends Item {
             user.teleport(targetChorusLink.getX() + 0.5,
                     targetChorusLink.getY() + 1,
                     targetChorusLink.getZ() + 0.5);
+        } else {
+            Items.CHORUS_FRUIT.finishUsing(stack, world, user);
         }
         return is;
     }

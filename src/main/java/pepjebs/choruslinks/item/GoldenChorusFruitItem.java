@@ -3,8 +3,13 @@ package pepjebs.choruslinks.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -46,16 +51,13 @@ public class GoldenChorusFruitItem extends Item {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         ItemStack is = super.finishUsing(stack, world, user);
         if (world.isClient) return is;
-        ChorusLinksMod.LOGGER.info("Consumed Golden Chorus Fruit...");
         BlockPos targetChorusLink = ChorusLinksUtils.doChorusFruitConsume(stack, world, user);
         if (!ChorusLinksUtils.doesBoundPosEqualBlockPos(stack, targetChorusLink)) {
             stack.removeSubTag(GOLDEN_CHORUS_BIND_POS_TAG);
             stack.removeSubTag(GOLDEN_CHORUS_BIND_DIM_TAG);
         }
         if (targetChorusLink != null) {
-            user.teleport(targetChorusLink.getX() + 0.5,
-                    targetChorusLink.getY() + 1,
-                    targetChorusLink.getZ() + 0.5);
+            ChorusLinksUtils.doChorusLinkTeleport(stack, world, user, targetChorusLink);
         } else {
             Items.CHORUS_FRUIT.finishUsing(stack, world, user);
         }

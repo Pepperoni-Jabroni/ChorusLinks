@@ -1,8 +1,15 @@
 package pepjebs.choruslinks.utils;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
@@ -67,5 +74,19 @@ public class ChorusLinksUtils {
             }
         }
         return false;
+    }
+
+    public static void doChorusLinkTeleport(ItemStack usingStack, World world, LivingEntity user, BlockPos blockPos) {
+        if (user.hasVehicle()) {
+            user.stopRiding();
+        }
+        if (user.teleport(blockPos.getX() + 0.5, blockPos.getY() + 1.0, blockPos.getZ() + 0.5, true)) {
+            SoundEvent soundEvent = user instanceof FoxEntity ? SoundEvents.ENTITY_FOX_TELEPORT : SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
+            world.playSound(null, user.getX(), user.getY(), user.getZ(), soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            user.playSound(soundEvent, 1.0F, 1.0F);
+        }
+        if (user instanceof PlayerEntity) {
+            ((PlayerEntity)user).getItemCooldownManager().set(usingStack.getItem(), 20);
+        }
     }
 }

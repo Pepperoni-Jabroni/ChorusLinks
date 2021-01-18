@@ -9,17 +9,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
 public class ChorusLinksMod implements ModInitializer {
 
     public static String MOD_ID = "chorus_links";
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     @Override
     public void onInitialize() {
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "golden_chorus_fruit"),
-                new Item(new Item.Settings().group(ItemGroup.FOOD)));
+                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.FOOD)));
         Block chorus_link = Registry.register(
                 Registry.BLOCK,
                 new Identifier(MOD_ID, "chorus_link"),

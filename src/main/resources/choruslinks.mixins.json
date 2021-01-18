@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pepjebs.choruslinks.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ChorusFruitItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

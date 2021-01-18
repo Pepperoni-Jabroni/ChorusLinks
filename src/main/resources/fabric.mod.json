@@ -21,6 +21,9 @@
       "pepjebs.choruslinks.ChorusLinksMod"
     ]
   },
+  "mixins": [
+    "choruslinks.mixins.json"
+  ],
 
   "depends": {
     "fabricloader": ">=0.7.4",

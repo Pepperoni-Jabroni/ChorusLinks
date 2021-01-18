@@ -19,10 +19,15 @@ public class ChorusLinksUtils {
     public static BlockPos doChorusFruitConsume(ItemStack stack, World world, LivingEntity user) {
         if (stack.getItem() instanceof GoldenChorusFruitItem && stack.hasGlint()
                 && stack.getOrCreateTag().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG)) {
-            int[] blockPos = stack.getOrCreateTag().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG);
+            int[] blockPosCoords = stack.getOrCreateTag().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG);
             String boundDim = stack.getOrCreateTag().getString(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_DIM_TAG);
-            if (blockPos.length == 3 && boundDim.compareTo(world.getRegistryKey().getValue().toString()) == 0)
-                return new BlockPos(blockPos[0], blockPos[1], blockPos[2]);
+            if (blockPosCoords.length == 3 && boundDim.compareTo(world.getRegistryKey().getValue().toString()) == 0) {
+                BlockPos blockPos = new BlockPos(blockPosCoords[0], blockPosCoords[1], blockPosCoords[2]);
+                if (world.isChunkLoaded(blockPos)
+                        && world.getBlockState(blockPos).getBlock() instanceof ChorusLinkBlock) {
+                    return blockPos;
+                }
+            }
         }
         return doChorusLinkSearch(stack, world, user);
     }
@@ -51,5 +56,16 @@ public class ChorusLinksUtils {
             }
         }
         return nearestChorusLink;
+    }
+
+    public static boolean doesBoundPosEqualBlockPos(ItemStack stack, BlockPos pos) {
+        if (stack.getItem() instanceof GoldenChorusFruitItem && stack.hasGlint()
+                && stack.getOrCreateTag().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG)) {
+            int[] blockPos = stack.getOrCreateTag().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG);
+            if (blockPos.length == 3) {
+                return blockPos[0] == pos.getX() && blockPos[1] == pos.getY() && blockPos[2] == pos.getZ();
+            }
+        }
+        return false;
     }
 }

@@ -1,20 +1,27 @@
 package pepjebs.choruslinks.utils;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
+import pepjebs.choruslinks.ChorusLinksMod;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.block.entity.ChorusLinkBlockEntity;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +34,25 @@ public class ChorusLinksUtils {
                 && stack.getOrCreateTag().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG)) {
             int[] blockPosCoords = stack.getOrCreateTag().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG);
             String boundDim = stack.getOrCreateTag().getString(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_DIM_TAG);
-            if (blockPosCoords.length == 3 && boundDim.compareTo(world.getRegistryKey().getValue().toString()) == 0) {
+            if (blockPosCoords.length == 3) {
+                ChorusLinksMod.LOGGER.info("Found Golden Chorus Fruit w/ destination");
                 BlockPos blockPos = new BlockPos(blockPosCoords[0], blockPosCoords[1], blockPosCoords[2]);
+                if (boundDim.compareTo(world.getRegistryKey().getValue().toString()) != 0 && world.getServer() != null) {
+                    ChorusLinksMod.LOGGER.info("Searching for matching world...");
+                    Iterator<ServerWorld> worlds = world.getServer().getWorlds().iterator();
+                    ServerWorld destWorld = null;
+                    while (worlds.hasNext()) {
+                        ServerWorld w = worlds.next();
+                        if (w.getRegistryKey().getValue().toString().compareTo(boundDim) == 0) {
+                            destWorld = w;
+                            break;
+                        }
+                    }
+                    ChorusLinksMod.LOGGER.info("destWorld: " + destWorld);
+                    if (destWorld != null) {
+                        doEnchantedGoldenChorusFruitWorldTransition(user, destWorld, blockPos);
+                    }
+                }
                 if (world.isChunkLoaded(blockPos)
                         && world.getBlockState(blockPos).getBlock() instanceof ChorusLinkBlock) {
                     return blockPos;
@@ -116,6 +140,45 @@ public class ChorusLinksUtils {
         if (user instanceof PlayerEntity) {
             // We need "stack.getItem()" instead of "this"
             ((PlayerEntity)user).getItemCooldownManager().set(stack.getItem(), 20);
+        }
+    }
+
+    // Please see: Entity::moveToWorld (Calling this doesn't work)
+    public static Entity doEnchantedGoldenChorusFruitWorldTransition(
+            Entity sourceEntity,
+            ServerWorld destinationWorld,
+            BlockPos destinationLoc) {
+        ChorusLinksMod.LOGGER.info("doEnchantedGoldenChorusFruitWorldTransition");
+        if (sourceEntity.world instanceof ServerWorld && !sourceEntity.removed) {
+            ChorusLinksMod.LOGGER.info("Doing the teleport");
+            sourceEntity.world.getProfiler().push("changeDimension");
+            sourceEntity.detach();
+            sourceEntity.world.getProfiler().push("reposition");
+            sourceEntity.world.getProfiler().swap("reloading");
+            Entity entity = sourceEntity.getType().create(destinationWorld);
+            if (entity != null) {
+                ChorusLinksMod.LOGGER.info("Creating a new entity");
+                entity.copyFrom(sourceEntity);
+                entity.refreshPositionAndAngles(
+                        destinationLoc.getX(),
+                        destinationLoc.getY(),
+                        destinationLoc.getZ(),
+                        entity.yaw,
+                        entity.pitch);
+                entity.setVelocity(entity.getVelocity());
+                destinationWorld.onDimensionChanged(entity);
+            }
+
+            sourceEntity.removed = true;
+            sourceEntity.world.getProfiler().pop();
+            ((ServerWorld)sourceEntity.world).resetIdleTimeout();
+            destinationWorld.resetIdleTimeout();
+            sourceEntity.world.getProfiler().pop();
+            ChorusLinksMod.LOGGER.info("Returning entity...");
+            return entity;
+        } else {
+            ChorusLinksMod.LOGGER.info("Returning null...");
+            return null;
         }
     }
 }

@@ -49,8 +49,7 @@ public class GoldenChorusFruitItem extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        ItemStack is = super.finishUsing(stack, world, user);
-        if (world.isClient) return is;
+        if (world.isClient) return super.finishUsing(stack, world, user);
         BlockPos targetChorusLink = ChorusLinksUtils.doChorusFruitConsume(stack, world, user);
         if (targetChorusLink != null) {
             if (!ChorusLinksUtils.doesBoundPosEqualBlockPos(stack, targetChorusLink)) {
@@ -61,7 +60,7 @@ public class GoldenChorusFruitItem extends Item {
         } else {
             Items.CHORUS_FRUIT.finishUsing(stack, world, user);
         }
-        return is;
+        return super.finishUsing(stack, world, user);
     }
 
     @Override

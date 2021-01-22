@@ -3,13 +3,8 @@ package pepjebs.choruslinks.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -17,7 +12,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import pepjebs.choruslinks.ChorusLinksMod;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.utils.ChorusLinksUtils;
 
@@ -58,7 +52,7 @@ public class GoldenChorusFruitItem extends Item {
             }
             ChorusLinksUtils.doChorusLinkTeleport(stack, world, user, targetChorusLink);
         } else {
-            Items.CHORUS_FRUIT.finishUsing(stack, world, user);
+            ChorusLinksUtils.doVanillaChorusFruitConsumption(stack, world, user);
         }
         return super.finishUsing(stack, world, user);
     }

@@ -1,13 +1,8 @@
 package pepjebs.choruslinks.mixin;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ChorusFruitItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,7 +25,6 @@ public class ChorusFruitItemMixin {
         if (targetChorusLink != null) {
             ChorusLinksUtils.doChorusLinkTeleport(stack, world, user, targetChorusLink);
             cir.setReturnValue(stack);
-            cir.cancel();
         }
     }
 }

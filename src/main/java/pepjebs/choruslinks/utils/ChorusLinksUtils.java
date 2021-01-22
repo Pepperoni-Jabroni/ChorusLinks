@@ -29,6 +29,9 @@ public class ChorusLinksUtils {
             String boundDim = stack.getOrCreateTag().getString(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_DIM_TAG);
             if (blockPosCoords.length == 3 && boundDim.compareTo(world.getRegistryKey().getValue().toString()) == 0) {
                 BlockPos blockPos = new BlockPos(blockPosCoords[0], blockPosCoords[1], blockPosCoords[2]);
+                if (!world.isChunkLoaded(blockPos)) {
+                    world.getChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
+                }
                 if (world.isChunkLoaded(blockPos)
                         && world.getBlockState(blockPos).getBlock() instanceof ChorusLinkBlock) {
                     return blockPos;

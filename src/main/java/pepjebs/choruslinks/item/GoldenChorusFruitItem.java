@@ -52,6 +52,8 @@ public class GoldenChorusFruitItem extends Item {
             }
             ChorusLinksUtils.doChorusLinkTeleport(stack, world, user, targetChorusLink);
         } else {
+            stack.removeSubTag(GOLDEN_CHORUS_BIND_POS_TAG);
+            stack.removeSubTag(GOLDEN_CHORUS_BIND_DIM_TAG);
             ChorusLinksUtils.doVanillaChorusFruitConsumption(stack, world, user);
         }
         return super.finishUsing(stack, world, user);

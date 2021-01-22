@@ -50,12 +50,18 @@ public class ChorusLinksUtils {
                     }
                     ChorusLinksMod.LOGGER.info("destWorld: " + destWorld);
                     if (destWorld != null) {
+                        world = destWorld;
                         doEnchantedGoldenChorusFruitWorldTransition(user, destWorld, blockPos);
                     }
+                }
+                if (!world.isChunkLoaded(blockPos)) {
+                    world.getChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
                 }
                 if (world.isChunkLoaded(blockPos)
                         && world.getBlockState(blockPos).getBlock() instanceof ChorusLinkBlock) {
                     return blockPos;
+                } else if (!world.isChunkLoaded(blockPos)) {
+                    ChorusLinksMod.LOGGER.warn("Destination blockPos not loaded");
                 }
             }
         }

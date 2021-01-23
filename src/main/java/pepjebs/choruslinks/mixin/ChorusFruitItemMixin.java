@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ChorusFruitItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,7 +27,7 @@ public class ChorusFruitItemMixin {
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) user;
         BlockPos targetChorusLink = ChorusLinksUtils.doChorusLinkSearch(stack, world, serverPlayerEntity);
         if (targetChorusLink != null) {
-            ChorusLinksUtils.doChorusLinkTeleport(stack, world, serverPlayerEntity, targetChorusLink);
+            ChorusLinksUtils.doChorusLinkTeleport(stack, (ServerWorld) world, serverPlayerEntity, targetChorusLink);
             cir.setReturnValue(stack);
         }
     }

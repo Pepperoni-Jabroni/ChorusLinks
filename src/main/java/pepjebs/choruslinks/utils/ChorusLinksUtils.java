@@ -9,6 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -25,19 +26,17 @@ public class ChorusLinksUtils {
 
     public static int CHORUS_LINK_RADIUS = 64;
 
-    public static BlockPos doChorusFruitConsume(ItemStack stack, World world, ServerPlayerEntity user) {
+    public static Pair<BlockPos, ServerWorld> doChorusFruitConsume(ItemStack stack, World world, ServerPlayerEntity user) {
         if (stack.getItem() instanceof GoldenChorusFruitItem && stack.hasGlint()
                 && stack.getOrCreateTag().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG)) {
             int[] blockPosCoords = stack.getOrCreateTag().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG);
             String boundDim = stack.getOrCreateTag().getString(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_DIM_TAG);
+            ServerWorld destWorld = null;
             if (blockPosCoords.length == 3) {
                 BlockPos blockPos = new BlockPos(blockPosCoords[0], blockPosCoords[1], blockPosCoords[2]);
                 if (boundDim.compareTo(world.getRegistryKey().getValue().toString()) != 0 && world.getServer() != null) {
                     // We need to set the destination dimension
-                    Iterator<ServerWorld> worlds = world.getServer().getWorlds().iterator();
-                    ServerWorld destWorld = null;
-                    while (worlds.hasNext()) {
-                        ServerWorld w = worlds.next();
+                    for (ServerWorld w : world.getServer().getWorlds()) {
                         if (w.getRegistryKey().getValue().toString().compareTo(boundDim) == 0) {
                             destWorld = w;
                             break;
@@ -45,10 +44,8 @@ public class ChorusLinksUtils {
                     }
                     if (destWorld != null) {
                         world = destWorld;
-                        user.teleport(destWorld, blockPos.getX(),
-                                blockPos.getY(), blockPos.getZ(), user.yaw, user.pitch);
                     } else {
-                        return doChorusLinkSearch(stack, world, user);
+                        return new Pair<>(doChorusLinkSearch(stack, world, user), (ServerWorld) world);
                     }
                 }
                 if (!world.isChunkLoaded(blockPos)) {
@@ -56,11 +53,11 @@ public class ChorusLinksUtils {
                 }
                 if (world.isChunkLoaded(blockPos)
                         && world.getBlockState(blockPos).getBlock() instanceof ChorusLinkBlock) {
-                    return blockPos;
+                    return new Pair<>(blockPos, (ServerWorld) world);
                 }
             }
         }
-        return doChorusLinkSearch(stack, world, user);
+        return new Pair<>(doChorusLinkSearch(stack, world, user), (ServerWorld) world);
     }
 
     public static BlockPos doChorusLinkSearch(ItemStack stack, World world, ServerPlayerEntity user) {
@@ -101,7 +98,10 @@ public class ChorusLinksUtils {
         return false;
     }
 
-    public static void doChorusLinkTeleport(ItemStack usingStack, World world, ServerPlayerEntity user, BlockPos blockPos) {
+    public static void doChorusLinkTeleport(ItemStack usingStack, ServerWorld world, ServerPlayerEntity user, BlockPos blockPos) {
+        if (world.getRegistryKey().getValue().toString().compareTo(user.world.getRegistryKey().getValue().toString()) != 0) {
+            user.teleport(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), user.yaw, user.pitch);
+        }
         if (user.hasVehicle()) {
             user.stopRiding();
         }

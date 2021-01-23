@@ -18,6 +18,7 @@ import pepjebs.choruslinks.utils.ChorusLinksUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GoldenChorusFruitItem extends Item {
 
@@ -70,11 +71,24 @@ public class GoldenChorusFruitItem extends Item {
                 int[] blockPos = stack.getOrCreateTag().getIntArray(GOLDEN_CHORUS_BIND_POS_TAG);
                 if (blockPos.length == 3) {
                     tooltip.add(new TranslatableText(
-                            "item.chorus_links.tooltip.golden_chorus_fruit.bound",
+                            "item.chorus_links.tooltip.golden_chorus_fruit.bound_1",
                             blockPos[0],
                             blockPos[1],
                             blockPos[2]
                     ).formatted(Formatting.GRAY).formatted(Formatting.ITALIC));
+                }
+                String boundDim = stack.getOrCreateTag().getString(GOLDEN_CHORUS_BIND_DIM_TAG);
+                if (boundDim != null && !boundDim.isEmpty()) {
+                    String[] parts = boundDim.split(":");
+                    if (parts.length >= 2) {
+                        String path = parts[1];
+                        tooltip.add(new TranslatableText(
+                                "item.chorus_links.tooltip.golden_chorus_fruit.bound_2",
+                                Arrays.stream(path.split("_"))
+                                        .map(str -> str.substring(0, 1).toUpperCase() + str.substring(1))
+                                        .collect(Collectors.joining(" "))
+                        ).formatted(Formatting.GRAY).formatted(Formatting.ITALIC));
+                    }
                 }
             } else {
                 tooltip.add(new TranslatableText("item.chorus_links.tooltip.golden_chorus_fruit.unbound")

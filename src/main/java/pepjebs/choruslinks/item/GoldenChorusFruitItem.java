@@ -5,6 +5,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -44,17 +45,19 @@ public class GoldenChorusFruitItem extends Item {
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (world.isClient) return super.finishUsing(stack, world, user);
-        BlockPos targetChorusLink = ChorusLinksUtils.doChorusFruitConsume(stack, world, user);
+        if (!(user instanceof ServerPlayerEntity)) return super.finishUsing(stack, world, user);
+        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) user;
+        BlockPos targetChorusLink = ChorusLinksUtils.doChorusFruitConsume(stack, world, serverPlayerEntity);
         if (targetChorusLink != null) {
             if (!ChorusLinksUtils.doesBoundPosEqualBlockPos(stack, targetChorusLink)) {
                 stack.removeSubTag(GOLDEN_CHORUS_BIND_POS_TAG);
                 stack.removeSubTag(GOLDEN_CHORUS_BIND_DIM_TAG);
             }
-            ChorusLinksUtils.doChorusLinkTeleport(stack, world, user, targetChorusLink);
+            ChorusLinksUtils.doChorusLinkTeleport(stack, world, serverPlayerEntity, targetChorusLink);
         } else {
             stack.removeSubTag(GOLDEN_CHORUS_BIND_POS_TAG);
             stack.removeSubTag(GOLDEN_CHORUS_BIND_DIM_TAG);
-            ChorusLinksUtils.doVanillaChorusFruitConsumption(stack, world, user);
+            ChorusLinksUtils.doVanillaChorusFruitConsumption(stack, world, serverPlayerEntity);
         }
         return super.finishUsing(stack, world, user);
     }

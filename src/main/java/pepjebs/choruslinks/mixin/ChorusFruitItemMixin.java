@@ -3,6 +3,7 @@ package pepjebs.choruslinks.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ChorusFruitItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,9 +22,11 @@ public class ChorusFruitItemMixin {
             LivingEntity user,
             CallbackInfoReturnable<ItemStack> cir) {
         if (world.isClient) return;
-        BlockPos targetChorusLink = ChorusLinksUtils.doChorusLinkSearch(stack, world, user);
+        if (!(user instanceof ServerPlayerEntity)) return;
+        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) user;
+        BlockPos targetChorusLink = ChorusLinksUtils.doChorusLinkSearch(stack, world, serverPlayerEntity);
         if (targetChorusLink != null) {
-            ChorusLinksUtils.doChorusLinkTeleport(stack, world, user, targetChorusLink);
+            ChorusLinksUtils.doChorusLinkTeleport(stack, world, serverPlayerEntity, targetChorusLink);
             cir.setReturnValue(stack);
         }
     }

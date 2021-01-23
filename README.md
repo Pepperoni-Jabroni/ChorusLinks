@@ -13,7 +13,7 @@ Chorus Links features & details:
 - When multiple Chorus Links are within radius, the closest is always chosen.
    - When strongly powered, a Chorus Link will not be chosen for teleportation when consuming Chorus Fruits.
 - Golden Chorus Fruits do the same, with a radius of 512 blocks.
-- Enchanted Golden Chorus Fruit, after being bound (by using on Chorus Link), will teleport the player to the bounded Chorus Link from any distance (given the player is in the correct dimension). If unbounded, they have a default radius of 1024 blocks.
+- Enchanted Golden Chorus Fruit, after being bound (by using, right-clicking, on Chorus Link), will teleport the player to the bounded Chorus Link from any distance & through dimensions. If unbounded, they have a default radius of 1024 blocks.
 
 ## Adds Chorus Link, Golden Chorus Fruit, & Enchanted Golden Chorus Fruit
 ![](https://i.imgur.com/cogHMyr.png)
@@ -28,4 +28,4 @@ Chorus Links features & details:
 ![](https://i.imgur.com/eWmoQfS.png)
 
 ## Enchanted Golden Chorus Fruits are bound by using on a Chorus Link
-![](https://i.imgur.com/T81IJe2.png)
+![](https://i.imgur.com/KfMVQj6.png)

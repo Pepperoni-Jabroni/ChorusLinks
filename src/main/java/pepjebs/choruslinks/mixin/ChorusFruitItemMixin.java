@@ -28,6 +28,8 @@ public class ChorusFruitItemMixin {
         BlockPos targetChorusLink = ChorusLinksUtils.doChorusLinkSearch(stack, world, serverPlayerEntity);
         if (targetChorusLink != null) {
             ChorusLinksUtils.doChorusLinkTeleport(stack, (ServerWorld) world, serverPlayerEntity, targetChorusLink);
+            // Basically "super.finishUsing"
+            stack = user.eatFood(world, stack);
             cir.setReturnValue(stack);
         }
     }

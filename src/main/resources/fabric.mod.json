@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "chorus_links",
-  "version": "1.1.0",
+  "version": "1.1.1",
 
   "name": "Chorus Links",
   "description": "Chorus Links enable players to deterministically teleport when consuming Chorus Fruits.",

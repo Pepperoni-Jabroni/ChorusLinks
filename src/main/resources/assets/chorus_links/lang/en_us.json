@@ -4,5 +4,14 @@
    "block.chorus_links.chorus_link": "Chorus Link",
    "item.chorus_links.tooltip.golden_chorus_fruit.unbound": "Unbound",
    "item.chorus_links.tooltip.golden_chorus_fruit.bound_1": "Bound to (%d, %d, %d)",
-   "item.chorus_links.tooltip.golden_chorus_fruit.bound_2": "In Dimension: %s"
+   "item.chorus_links.tooltip.golden_chorus_fruit.bound_2": "In Dimension: %s",
+   "text.autoconfig.chorus_links.title": "Chorus Links Config",
+   "text.autoconfig.chorus_links.option.baseChorusFruitLinkRadius": "Base Chorus Fruit Link Radius",
+   "text.autoconfig.chorus_links.option.goldenChorusFruitRadiusMultiplier": "Golden Chorus Fruit Radius Multiplier",
+   "text.autoconfig.chorus_links.option.enchantedGoldenChorusFruitRadiusMultiplier": "Enchanted Golden Chorus Fruit Radius Multiplier",
+   "text.autoconfig.chorus_links.option.enableEnchantedInterDimensionTeleport": "Enable Enchanted Inter-Dimensional Teleport",
+   "text.autoconfig.chorus_links.option.baseChorusFruitLinkRadius.@Tooltip": "The effective radius of a Chorus Fruit when searching for the nearest Chorus Link",
+   "text.autoconfig.chorus_links.option.goldenChorusFruitRadiusMultiplier.@Tooltip": "The multiplier to the radius for a Golden Chorus Fruit when searching for the nearest Chorus Link",
+   "text.autoconfig.chorus_links.option.enchantedGoldenChorusFruitRadiusMultiplier.@Tooltip": "The multiplier to the radius for an Enchanted Golden Chorus Fruit when searching for the nearest Chorus Link",
+   "text.autoconfig.chorus_links.option.enableEnchantedInterDimensionTeleport.@Tooltip": "If 'true', the Enchanted Golden Chorus Fruit is able to teleport players inter-dimensionally"
 }

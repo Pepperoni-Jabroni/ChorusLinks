@@ -1,7 +1,6 @@
 package pepjebs.choruslinks.utils;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,13 +17,10 @@ import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.block.entity.ChorusLinkBlockEntity;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ChorusLinksUtils {
-
-    public static int CHORUS_LINK_RADIUS = 64;
 
     public static Pair<BlockPos, ServerWorld> doChorusFruitConsume(ItemStack stack, World world, ServerPlayerEntity user) {
         if (stack.getItem() instanceof GoldenChorusFruitItem && stack.hasGlint()
@@ -35,6 +31,9 @@ public class ChorusLinksUtils {
             if (blockPosCoords.length == 3) {
                 BlockPos blockPos = new BlockPos(blockPosCoords[0], blockPosCoords[1], blockPosCoords[2]);
                 if (boundDim.compareTo(world.getRegistryKey().getValue().toString()) != 0 && world.getServer() != null) {
+                    if (ChorusLinksMod.CONFIG != null && !ChorusLinksMod.CONFIG.enableEnchantedInterDimensionTeleport) {
+                        return new Pair<>(doChorusLinkSearch(stack, world, user), (ServerWorld) world);
+                    }
                     // We need to set the destination dimension
                     for (ServerWorld w : world.getServer().getWorlds()) {
                         if (w.getRegistryKey().getValue().toString().compareTo(boundDim) == 0) {
@@ -68,7 +67,7 @@ public class ChorusLinksUtils {
                 .collect(Collectors.toList());
         BlockPos nearestChorusLink = null;
         double nearestSoFar = Double.MAX_VALUE;
-        int radius = CHORUS_LINK_RADIUS;
+        int radius = ChorusLinksMod.CONFIG == null ? 64 : ChorusLinksMod.CONFIG.baseChorusFruitLinkRadius;
         if (stack.getItem() instanceof GoldenChorusFruitItem) {
             radius *= ((GoldenChorusFruitItem) stack.getItem()).getRadiusMultiplier();
         }

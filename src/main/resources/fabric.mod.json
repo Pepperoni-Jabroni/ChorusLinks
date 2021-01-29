@@ -1,25 +1,25 @@
 {
   "schemaVersion": 1,
   "id": "chorus_links",
-  "version": "1.1.1",
+  "version": "1.2.1",
 
   "name": "Chorus Links",
-  "description": "Chorus Links enable players to deterministically teleport when consuming Chorus Fruits.",
+  "description": "Chorus Links is a vanilla friendly teleportation mod using Chorus Fruits!",
   "authors": [
-    "pepperoni_jabroni_"
+    "Pepperoni__Jabroni__"
   ],
   "contact": {
-    "homepage": "https://www.facebook.com",
-    "sources": "https://www.facebook.com"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/chorus-links",
+    "sources": "https://github.com/Pepperoni-Jabroni/ChorusLinks",
+    "issues": "https://github.com/Pepperoni-Jabroni/ChorusLinks/issues"
   },
 
   "license": "GPL-3.0",
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "pepjebs.choruslinks.ChorusLinksMod"
-    ]
+    "main": ["pepjebs.choruslinks.ChorusLinksMod"],
+    "modmenu": ["pepjebs.choruslinks.config.ChorusLinksModMenuApiImpl"]
   },
   "mixins": [
     "choruslinks.mixins.json"

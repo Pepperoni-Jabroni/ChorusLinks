@@ -1,5 +1,7 @@
 package pepjebs.choruslinks;
 
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
+import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
@@ -15,30 +17,39 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.block.entity.ChorusLinkBlockEntity;
+import pepjebs.choruslinks.config.ChorusLinksConfig;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
 public class ChorusLinksMod implements ModInitializer {
 
-    public static String MOD_ID = "chorus_links";
+    public static final String MOD_ID = "chorus_links";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+    public static ChorusLinksConfig CONFIG = null;
 
     public static BlockEntityType<ChorusLinkBlockEntity> CHORUS_LINK_BLOCK_ENTITY_TYPE = null;
 
     @Override
     public void onInitialize() {
+        AutoConfig.register(ChorusLinksConfig.class, JanksonConfigSerializer::new);
+        CONFIG = AutoConfig.getConfigHolder(ChorusLinksConfig.class).getConfig();
+
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "golden_chorus_fruit"),
-                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.RARE), 8));
+                new GoldenChorusFruitItem(
+                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.RARE),
+                        CONFIG.goldenChorusFruitRadiusMultiplier));
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "enchanted_golden_chorus_fruit"),
-                new GoldenChorusFruitItem(new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.EPIC), 16));
+                new GoldenChorusFruitItem(
+                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.EPIC),
+                        CONFIG.enchantedGoldenChorusFruitRadiusMultiplier));
 
         Block chorus_link = Registry.register(
                 Registry.BLOCK,
                 new Identifier(MOD_ID, "chorus_link"),
-                new ChorusLinkBlock(FabricBlockSettings.of(Material.METAL)));
+                new ChorusLinkBlock(FabricBlockSettings.of(Material.METAL).hardness(3.5f)));
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "chorus_link"),

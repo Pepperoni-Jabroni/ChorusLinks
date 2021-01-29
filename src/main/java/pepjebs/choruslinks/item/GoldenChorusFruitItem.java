@@ -78,7 +78,7 @@ public class GoldenChorusFruitItem extends Item {
                             blockPos[0],
                             blockPos[1],
                             blockPos[2]
-                    ).formatted(Formatting.GRAY).formatted(Formatting.ITALIC));
+                    ).formatted(Formatting.GRAY));
                 }
                 String boundDim = stack.getOrCreateTag().getString(GOLDEN_CHORUS_BIND_DIM_TAG);
                 if (boundDim != null && !boundDim.isEmpty()) {
@@ -90,12 +90,12 @@ public class GoldenChorusFruitItem extends Item {
                                 Arrays.stream(path.split("_"))
                                         .map(str -> str.substring(0, 1).toUpperCase() + str.substring(1))
                                         .collect(Collectors.joining(" "))
-                        ).formatted(Formatting.GRAY).formatted(Formatting.ITALIC));
+                        ).formatted(Formatting.GRAY));
                     }
                 }
             } else {
                 tooltip.add(new TranslatableText("item.chorus_links.tooltip.golden_chorus_fruit.unbound")
-                        .formatted(Formatting.GRAY).formatted(Formatting.ITALIC));
+                        .formatted(Formatting.GRAY));
             }
         }
     }

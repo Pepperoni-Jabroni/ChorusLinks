@@ -4,6 +4,7 @@ import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
@@ -49,7 +50,12 @@ public class ChorusLinksMod implements ModInitializer {
         Block chorus_link = Registry.register(
                 Registry.BLOCK,
                 new Identifier(MOD_ID, "chorus_link"),
-                new ChorusLinkBlock(FabricBlockSettings.of(Material.METAL).hardness(3.5f)));
+                new ChorusLinkBlock(
+                        FabricBlockSettings
+                                .of(Material.METAL)
+                                .hardness(3.5f)
+                                .requiresTool()
+                                .breakByTool(FabricToolTags.PICKAXES)));
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "chorus_link"),

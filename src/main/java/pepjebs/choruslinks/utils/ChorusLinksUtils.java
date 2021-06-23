@@ -47,10 +47,10 @@ public class ChorusLinksUtils {
                         return new Pair<>(doChorusLinkSearch(stack, world, user), (ServerWorld) world);
                     }
                 }
-                if (!world.isChunkLoaded(blockPos)) {
+                if (!world.isChunkLoaded(blockPos.getX() >> 4, blockPos.getZ() >> 4)) {
                     world.getChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
                 }
-                if (world.isChunkLoaded(blockPos)
+                if (world.isChunkLoaded(blockPos.getX() >> 4, blockPos.getZ() >> 4)
                         && world.getBlockState(blockPos).getBlock() instanceof ChorusLinkBlock) {
                     return new Pair<>(blockPos, (ServerWorld) world);
                 }
@@ -58,7 +58,7 @@ public class ChorusLinksUtils {
         }
         return new Pair<>(doChorusLinkSearch(stack, world, user), (ServerWorld) world);
     }
-
+//FIXME: change ChorusLink search logic
     public static BlockPos doChorusLinkSearch(ItemStack stack, World world, ServerPlayerEntity user) {
         List<ChorusLinkBlockEntity> chorusLinks = world.blockEntities
                 .stream()
@@ -73,7 +73,7 @@ public class ChorusLinksUtils {
         }
         for (ChorusLinkBlockEntity link : chorusLinks) {
             BlockPos targetPos = link.getPos();
-            if (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos)) {
+            if (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos.getX() >> 4, targetPos.getZ() >> 4)) {
                 BlockState state = world.getBlockState(targetPos);
                 if (world.getReceivedStrongRedstonePower(targetPos) != 0) continue;
                 double playerDist = targetPos.getSquaredDistance(user.getPos(), true);
@@ -99,7 +99,7 @@ public class ChorusLinksUtils {
 
     public static void doChorusLinkTeleport(ItemStack usingStack, ServerWorld world, ServerPlayerEntity user, BlockPos blockPos) {
         if (world.getRegistryKey().getValue().toString().compareTo(user.world.getRegistryKey().getValue().toString()) != 0) {
-            user.teleport(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), user.yaw, user.pitch);
+            user.teleport(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), user.getYaw(), user.getPitch());
         }
         if (user.hasVehicle()) {
             user.stopRiding();
@@ -120,7 +120,7 @@ public class ChorusLinksUtils {
         for(int i = 0; i < 16; ++i) {
             double g = user.getX() + (user.getRandom().nextDouble() - 0.5D) * 16.0D;
             double h = MathHelper.clamp(user.getY() +
-                    (double)(user.getRandom().nextInt(16) - 8), 0.0D, (world.getDimensionHeight() - 1));
+                    (double)(user.getRandom().nextInt(16) - 8), 0.0D, (world.getDimension().getHeight() - 1));
             double j = user.getZ() + (user.getRandom().nextDouble() - 0.5D) * 16.0D;
             if (user.hasVehicle()) {
                 user.stopRiding();

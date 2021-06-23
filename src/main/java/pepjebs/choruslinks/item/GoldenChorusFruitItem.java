@@ -4,7 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -111,7 +111,7 @@ public class GoldenChorusFruitItem extends Item {
             BlockPos pos = context.getBlockPos();
             BlockState state = context.getWorld().getBlockState(pos);
             if (state.getBlock() instanceof ChorusLinkBlock) {
-                CompoundTag tag = context.getStack().getOrCreateTag();
+                NbtCompound tag = context.getStack().getOrCreateTag();
                 tag.putIntArray(GOLDEN_CHORUS_BIND_POS_TAG, Arrays.asList(pos.getX(), pos.getY(), pos.getZ()));
                 tag.putString(GOLDEN_CHORUS_BIND_DIM_TAG, context.getWorld().getRegistryKey().getValue().toString());
                 context.getStack().setTag(tag);

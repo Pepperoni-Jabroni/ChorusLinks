@@ -68,6 +68,8 @@ public class ChorusLinksUtils {
         if (stack.getItem() instanceof GoldenChorusFruitItem) {
             radius *= ((GoldenChorusFruitItem) stack.getItem()).getRadiusMultiplier();
         }
+        // This "chorusLinkPositions" solution to finding Chorus Links isn't perfect, as Chours Links that
+        // haven't been loaded in a given session won't be considered as a destination...
         List<ChorusLinkBlockEntity> chorusLinks = ChorusLinkBlockEntity.chorusLinkPositions.stream().map(queryPos -> {
             if (queryPos.getLeft().getRegistryKey() == world.getRegistryKey()) {
                 return world

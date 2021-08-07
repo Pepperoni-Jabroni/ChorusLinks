@@ -1,9 +1,10 @@
 package pepjebs.choruslinks;
 
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
@@ -27,7 +28,7 @@ public class ChorusLinksMod implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static ChorusLinksConfig CONFIG = null;
 
-    public static BlockEntityType<ChorusLinkBlockEntity> CHORUS_LINK_BLOCK_ENTITY_TYPE = null;
+    public static BlockEntityType<ChorusLinkBlockEntity> CHORUS_LINK_BLOCK_ENTITY_TYPE;
 
     @Override
     public void onInitialize() {
@@ -63,6 +64,6 @@ public class ChorusLinksMod implements ModInitializer {
         CHORUS_LINK_BLOCK_ENTITY_TYPE = Registry.register(
                 Registry.BLOCK_ENTITY_TYPE,
                 new Identifier(MOD_ID, "chorus_link_type"),
-                BlockEntityType.Builder.create(ChorusLinkBlockEntity::new, chorus_link).build(null));
+                FabricBlockEntityTypeBuilder.create(ChorusLinkBlockEntity::new, chorus_link).build(null));
     }
 }

@@ -4,7 +4,8 @@
   "package": "pepjebs.choruslinks.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ChorusFruitItemMixin"
+    "ChorusFruitItemMixin",
+    "MinecraftServerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -55,8 +55,7 @@ public class ChorusLinksMod implements ModInitializer {
                         FabricBlockSettings
                                 .of(Material.METAL)
                                 .hardness(3.5f)
-                                .requiresTool()
-                                .breakByTool(FabricToolTags.PICKAXES)));
+                                .requiresTool()));
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "chorus_link"),

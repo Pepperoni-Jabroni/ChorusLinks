@@ -20,6 +20,7 @@ import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.block.entity.ChorusLinkBlockEntity;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -68,16 +69,19 @@ public class ChorusLinksUtils {
         if (stack.getItem() instanceof GoldenChorusFruitItem) {
             radius *= ((GoldenChorusFruitItem) stack.getItem()).getRadiusMultiplier();
         }
-        // This "chorusLinkPositions" solution to finding Chorus Links isn't perfect, as Chours Links that
-        // haven't been loaded in a given session won't be considered as a destination...
-        List<ChorusLinkBlockEntity> chorusLinks = ChorusLinkBlockEntity.chorusLinkPositions.stream().map(queryPos -> {
-            if (queryPos.getLeft().getRegistryKey() == world.getRegistryKey()) {
-                return world
-                        .getBlockEntity(queryPos.getRight(), ChorusLinksMod.CHORUS_LINK_BLOCK_ENTITY_TYPE)
-                        .orElse(null);
+        List<ChorusLinkBlockEntity> chorusLinks = new ArrayList<>();
+        int chunkRadius = radius / 16;
+        int chunkUserX = user.getBlockX() / 16;
+        int chunkUserZ = user.getBlockZ() / 16;
+        for (int i = -1 * chunkRadius + 1 + chunkUserX; i < chunkRadius + chunkUserX; i++) {
+            for (int j = -1 * chunkRadius + 1 + chunkUserZ; j < chunkRadius + chunkUserZ; j++) {
+                List<ChorusLinkBlockEntity> chunkLinks = world.getChunk(i, j).getBlockEntities().values().stream()
+                        .filter(blockEntity -> blockEntity instanceof ChorusLinkBlockEntity)
+                        .map(blockEntity -> (ChorusLinkBlockEntity) blockEntity)
+                        .collect(Collectors.toList());
+                chorusLinks.addAll(chunkLinks);
             }
-            return null;
-        }).filter(Objects::nonNull).collect(Collectors.toList());
+        }
         BlockPos nearestChorusLink = null;
         double nearestSoFar = Double.MAX_VALUE;
         for (ChorusLinkBlockEntity link : chorusLinks) {

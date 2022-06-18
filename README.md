@@ -9,11 +9,11 @@ Chorus Links features & details:
    - Crafted by surrounding a Chorus Fruit with Gold Ingots or Gold Blocks respectively
 - Adds 1 new block: Chorus Link
    - Crafted by surrounding a Netherite Ingot with Purpur Blocks
-- If a Chorus Fruit is consumed within 64 blocks of a Chorus Link, the player will always be teleported to the top of the Chorus Link.
+- If a Chorus Fruit is consumed within 128 blocks of a Chorus Link (configurable), the player will always be teleported to the top of the Chorus Link.
 - When multiple Chorus Links are within radius, the closest is always chosen.
-   - When strongly powered, a Chorus Link will not be chosen for teleportation when consuming Chorus Fruits.
-- Golden Chorus Fruits do the same, with a radius of 512 blocks.
-- Enchanted Golden Chorus Fruit, after being bound (by using on Chorus Link), will teleport the player to the bounded Chorus Link from any distance (given the player is in the correct dimension). If unbounded, they have a default radius of 1024 blocks.
+   - When strongly powered, a Chorus Link will not be chosen for teleportation when consuming Chorus Fruits. This means you can select which Chorus Link is chosen using Redstone.
+- Golden Chorus Fruits do the same across any distance *in the same dimension*
+- Enchanted Golden Chorus Fruit, after being bound (by using/right-clicking on a Chorus Link), will teleport the player to the bounded Chorus Link from any distance  *and across dimensions*. If unbounded, they function the same as a Golden Chorus Fruit. They get 8 uses until they're fully consumed.
 
 ## Adds Chorus Link, Golden Chorus Fruit, & Enchanted Golden Chorus Fruit
 ![](https://i.imgur.com/cogHMyr.png)

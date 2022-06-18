@@ -85,7 +85,7 @@ public class ChorusLinksUtils {
             if (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos)) {
                 BlockState state = world.getBlockState(targetPos);
                 if (world.getReceivedStrongRedstonePower(targetPos) != 0) continue;
-                double playerDist = targetPos.getSquaredDistance(user.getPos(), true);
+                double playerDist = targetPos.getSquaredDistance(user.getPos());
                 if (state.getBlock() instanceof ChorusLinkBlock && nearestSoFar > playerDist) {
                     nearestChorusLink = targetPos;
                     nearestSoFar = playerDist;

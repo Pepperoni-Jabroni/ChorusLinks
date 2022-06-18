@@ -17,10 +17,6 @@ import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.block.entity.ChorusLinkBlockEntity;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class ChorusLinksUtils {
 
     public static Pair<BlockPos, ServerWorld> doChorusFruitConsume(ItemStack stack, World world, ServerPlayerEntity user) {
@@ -61,28 +57,12 @@ public class ChorusLinksUtils {
     }
 
     public static BlockPos doChorusLinkSearch(ItemStack stack, World world, ServerPlayerEntity user) {
-        int radius = ChorusLinksMod.CONFIG == null ? 64 : ChorusLinksMod.CONFIG.baseChorusFruitLinkRadius;
-        if (stack.getItem() instanceof GoldenChorusFruitItem) {
-            radius *= ((GoldenChorusFruitItem) stack.getItem()).getRadiusMultiplier();
-        }
-        List<ChorusLinkBlockEntity> chorusLinks = new ArrayList<>();
-        int chunkRadius = radius / 16;
-        int chunkUserX = user.getBlockX() / 16;
-        int chunkUserZ = user.getBlockZ() / 16;
-        for (int i = -1 * chunkRadius + 1 + chunkUserX; i < chunkRadius + chunkUserX; i++) {
-            for (int j = -1 * chunkRadius + 1 + chunkUserZ; j < chunkRadius + chunkUserZ; j++) {
-                List<ChorusLinkBlockEntity> chunkLinks = world.getChunk(i, j).getBlockEntities().values().stream()
-                        .filter(blockEntity -> blockEntity instanceof ChorusLinkBlockEntity)
-                        .map(blockEntity -> (ChorusLinkBlockEntity) blockEntity)
-                        .collect(Collectors.toList());
-                chorusLinks.addAll(chunkLinks);
-            }
-        }
+        int radius = ChorusLinksMod.CONFIG == null ? 128 : ChorusLinksMod.CONFIG.baseChorusFruitLinkRadius;
+        boolean useRadius = !(stack.getItem() instanceof GoldenChorusFruitItem);
         BlockPos nearestChorusLink = null;
         double nearestSoFar = Double.MAX_VALUE;
-        for (ChorusLinkBlockEntity link : chorusLinks) {
-            BlockPos targetPos = link.getPos();
-            if (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos)) {
+        for (BlockPos targetPos : ChorusLinkBlockEntity.chorusLinkPositions.stream().map(Pair::getRight).toList()) {
+            if (!useRadius || (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos))){
                 BlockState state = world.getBlockState(targetPos);
                 if (world.getReceivedStrongRedstonePower(targetPos) != 0) continue;
                 double playerDist = targetPos.getSquaredDistance(user.getPos());

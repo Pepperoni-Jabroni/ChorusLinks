@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pepjebs.choruslinks.ChorusLinksMod;
 import pepjebs.choruslinks.utils.ChorusLinksUtils;
 
 @Mixin(ChorusFruitItem.class)
@@ -27,10 +28,14 @@ public class ChorusFruitItemMixin {
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) user;
         BlockPos targetChorusLink = ChorusLinksUtils.doChorusLinkSearch(stack, world, serverPlayerEntity);
         if (targetChorusLink != null) {
+            ChorusLinksMod.LOGGER.info("Going to "+targetChorusLink.toShortString());
             ChorusLinksUtils.doChorusLinkTeleport(stack, (ServerWorld) world, serverPlayerEntity, targetChorusLink);
             // Basically "super.finishUsing"
             stack = user.eatFood(world, stack);
+            ChorusLinksMod.LOGGER.info("Returning...");
             cir.setReturnValue(stack);
+        } else {
+            ChorusLinksMod.LOGGER.info("No valid target chorus_link found.");
         }
     }
 }

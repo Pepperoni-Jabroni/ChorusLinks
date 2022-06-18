@@ -10,15 +10,7 @@ import pepjebs.choruslinks.ChorusLinksMod;
 public class ChorusLinksConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip()
     @Comment("The effective radius of a Chorus Fruit when searching for the nearest Chorus Link")
-    public int baseChorusFruitLinkRadius = 64;
-
-    @ConfigEntry.Gui.Tooltip()
-    @Comment("The multiplier to the radius for a Golden Chorus Fruit when searching for the nearest Chorus Link")
-    public int goldenChorusFruitRadiusMultiplier = 8;
-
-    @ConfigEntry.Gui.Tooltip()
-    @Comment("The multiplier to the radius for an Enchanted Golden Chorus Fruit when searching for the nearest Chorus Link")
-    public int enchantedGoldenChorusFruitRadiusMultiplier = 16;
+    public int baseChorusFruitLinkRadius = 128;
 
 
     @ConfigEntry.Gui.Tooltip()

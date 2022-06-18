@@ -3,10 +3,12 @@ package pepjebs.choruslinks.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
@@ -15,7 +17,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
+import pepjebs.choruslinks.ChorusLinksMod;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.utils.ChorusLinksUtils;
 
@@ -51,6 +55,7 @@ public class GoldenChorusFruitItem extends Item {
         if (world.isClient) return super.finishUsing(stack, world, user);
         if (!(user instanceof ServerPlayerEntity)) return super.finishUsing(stack, world, user);
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) user;
+        ChorusLinksMod.LOGGER.info("Searching for chorus link");
         Pair<BlockPos, ServerWorld> targetChorusLink =
                 ChorusLinksUtils.doChorusFruitConsume(stack, world, serverPlayerEntity);
         if (targetChorusLink.getLeft() != null) {
@@ -58,13 +63,18 @@ public class GoldenChorusFruitItem extends Item {
                 stack.removeSubNbt(GOLDEN_CHORUS_BIND_POS_TAG);
                 stack.removeSubNbt(GOLDEN_CHORUS_BIND_DIM_TAG);
             }
+            ChorusLinksMod.LOGGER.info("Going to "+targetChorusLink.getLeft().toShortString());
             ChorusLinksUtils.doChorusLinkTeleport(stack, targetChorusLink.getRight(), serverPlayerEntity, targetChorusLink.getLeft());
         } else {
             stack.removeSubNbt(GOLDEN_CHORUS_BIND_POS_TAG);
             stack.removeSubNbt(GOLDEN_CHORUS_BIND_DIM_TAG);
+            ChorusLinksMod.LOGGER.info("Going to vanilla consumption");
             ChorusLinksUtils.doVanillaChorusFruitConsumption(stack, world, serverPlayerEntity);
         }
-        return super.finishUsing(stack, world, user);
+        ChorusLinksMod.LOGGER.info("Returning...");
+        world.playSound(null, user.getX(), user.getY(), user.getZ(), user.getEatSound(stack), SoundCategory.NEUTRAL, 1.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
+        user.emitGameEvent(GameEvent.EAT);
+        return stack;
     }
 
     @Override

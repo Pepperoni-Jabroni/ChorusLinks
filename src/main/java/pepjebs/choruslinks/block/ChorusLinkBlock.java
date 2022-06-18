@@ -1,6 +1,5 @@
 package pepjebs.choruslinks.block;
 
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -16,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import pepjebs.choruslinks.ChorusLinksMod;
 import pepjebs.choruslinks.block.entity.ChorusLinkBlockEntity;
 
-public class ChorusLinkBlock extends BlockWithEntity implements BlockEntityProvider {
+public class ChorusLinkBlock extends BlockWithEntity {
 
     public ChorusLinkBlock(Settings settings) {
         super(settings);
@@ -37,7 +36,7 @@ public class ChorusLinkBlock extends BlockWithEntity implements BlockEntityProvi
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return checkType(type,
                 ChorusLinksMod.CHORUS_LINK_BLOCK_ENTITY_TYPE,
-                (world1, pos, state1, be) -> ChorusLinkBlockEntity.tick(world1, pos, state1, be));
+                ChorusLinkBlockEntity::tick);
     }
 
     @Override

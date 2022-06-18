@@ -20,8 +20,10 @@ public class ChorusLinkBlockEntity extends BlockEntity {
 
     public static void tick(World world, BlockPos pos, BlockState state, ChorusLinkBlockEntity be) {
         Pair<World, BlockPos> queryPos = new Pair<>(world, pos);
-        if (!chorusLinkPositions.contains(queryPos)) {
+        if (chorusLinkPositions.stream()
+                .noneMatch(p -> p.getLeft().getRegistryKey() == world.getRegistryKey() && pos.equals(p.getRight()))) {
             chorusLinkPositions.add(queryPos);
+            ChorusLinksMod.LOGGER.info("Now tracking "+chorusLinkPositions.size()+" Chorus Links");
         }
     }
 }

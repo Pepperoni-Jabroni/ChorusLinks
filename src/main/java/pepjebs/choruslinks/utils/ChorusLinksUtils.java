@@ -17,6 +17,8 @@ import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.block.entity.ChorusLinkBlockEntity;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
+import java.util.Iterator;
+
 public class ChorusLinksUtils {
 
     public static Pair<BlockPos, ServerWorld> doChorusFruitConsume(ItemStack stack, World world, ServerPlayerEntity user) {
@@ -61,7 +63,9 @@ public class ChorusLinksUtils {
         boolean useRadius = !(stack.getItem() instanceof GoldenChorusFruitItem);
         BlockPos nearestChorusLink = null;
         double nearestSoFar = Double.MAX_VALUE;
-        for (BlockPos targetPos : ChorusLinkBlockEntity.chorusLinkPositions.stream().map(Pair::getRight).toList()) {
+        for (BlockPos targetPos : ChorusLinkBlockEntity.chorusLinkPositions.stream()
+                .filter(p -> p.getLeft().getRegistryKey() == world.getRegistryKey())
+                .map(Pair::getRight).toList()) {
             if (!useRadius || (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos))){
                 BlockState state = world.getBlockState(targetPos);
                 if (world.getReceivedStrongRedstonePower(targetPos) != 0) continue;

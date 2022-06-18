@@ -23,7 +23,6 @@ public class ChorusLinkBlockEntity extends BlockEntity {
         if (chorusLinkPositions.stream()
                 .noneMatch(p -> p.getLeft().getRegistryKey() == world.getRegistryKey() && pos.equals(p.getRight()))) {
             chorusLinkPositions.add(queryPos);
-            ChorusLinksMod.LOGGER.info("Now tracking "+chorusLinkPositions.size()+" Chorus Links");
         }
     }
 }

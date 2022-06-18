@@ -32,11 +32,8 @@ public class GoldenChorusFruitItem extends Item {
     public static String GOLDEN_CHORUS_BIND_POS_TAG = "BoundPos";
     public static String GOLDEN_CHORUS_BIND_DIM_TAG = "BoundDim";
 
-    private final int radiusMultiplier;
-
-    public GoldenChorusFruitItem(Settings settings, int radiusMultiplier1) {
+    public GoldenChorusFruitItem(Settings settings) {
         super(settings);
-        this.radiusMultiplier = radiusMultiplier1;
     }
 
     @Override
@@ -52,10 +49,9 @@ public class GoldenChorusFruitItem extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        if (world.isClient) return super.finishUsing(stack, world, user);
-        if (!(user instanceof ServerPlayerEntity)) return super.finishUsing(stack, world, user);
+        if (world.isClient) return stack;
+        if (!(user instanceof ServerPlayerEntity)) return stack;
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) user;
-        ChorusLinksMod.LOGGER.info("Searching for chorus link");
         Pair<BlockPos, ServerWorld> targetChorusLink =
                 ChorusLinksUtils.doChorusFruitConsume(stack, world, serverPlayerEntity);
         if (targetChorusLink.getLeft() != null) {
@@ -63,17 +59,19 @@ public class GoldenChorusFruitItem extends Item {
                 stack.removeSubNbt(GOLDEN_CHORUS_BIND_POS_TAG);
                 stack.removeSubNbt(GOLDEN_CHORUS_BIND_DIM_TAG);
             }
-            ChorusLinksMod.LOGGER.info("Going to "+targetChorusLink.getLeft().toShortString());
             ChorusLinksUtils.doChorusLinkTeleport(stack, targetChorusLink.getRight(), serverPlayerEntity, targetChorusLink.getLeft());
         } else {
             stack.removeSubNbt(GOLDEN_CHORUS_BIND_POS_TAG);
             stack.removeSubNbt(GOLDEN_CHORUS_BIND_DIM_TAG);
-            ChorusLinksMod.LOGGER.info("Going to vanilla consumption");
             ChorusLinksUtils.doVanillaChorusFruitConsumption(stack, world, serverPlayerEntity);
         }
-        ChorusLinksMod.LOGGER.info("Returning...");
         world.playSound(null, user.getX(), user.getY(), user.getZ(), user.getEatSound(stack), SoundCategory.NEUTRAL, 1.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
         user.emitGameEvent(GameEvent.EAT);
+        if (stack.isDamageable()) {
+            stack.damage(1, user, p -> {});
+        } else {
+            stack.decrement(1);
+        }
         return stack;
     }
 
@@ -129,10 +127,9 @@ public class GoldenChorusFruitItem extends Item {
                 tag.putIntArray(GOLDEN_CHORUS_BIND_POS_TAG, Arrays.asList(pos.getX(), pos.getY(), pos.getZ()));
                 tag.putString(GOLDEN_CHORUS_BIND_DIM_TAG, context.getWorld().getRegistryKey().getValue().toString());
                 context.getStack().setNbt(tag);
+                return ActionResult.CONSUME;
             }
         }
         return super.useOnBlock(context);
     }
-
-    public int getRadiusMultiplier() { return radiusMultiplier; }
 }

@@ -38,14 +38,12 @@ public class ChorusLinksMod implements ModInitializer {
                 Registry.ITEM,
                 new Identifier(MOD_ID, "golden_chorus_fruit"),
                 new GoldenChorusFruitItem(
-                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.RARE),
-                        CONFIG.goldenChorusFruitRadiusMultiplier));
+                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.RARE)));
         Registry.register(
                 Registry.ITEM,
                 new Identifier(MOD_ID, "enchanted_golden_chorus_fruit"),
                 new GoldenChorusFruitItem(
-                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.EPIC).maxDamage(4),
-                        CONFIG.enchantedGoldenChorusFruitRadiusMultiplier));
+                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.EPIC).maxDamage(8)));
 
         Block chorus_link = Registry.register(
                 Registry.BLOCK,

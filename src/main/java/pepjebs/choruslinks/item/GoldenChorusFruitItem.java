@@ -3,6 +3,7 @@ package pepjebs.choruslinks.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
@@ -49,6 +50,8 @@ public class GoldenChorusFruitItem extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        // user.eatFood always decrements ItemStack by 1, but Enchanted Golden Chorus Fruits
+        // should be damaged instead
         if (world.isClient) return stack;
         if (!(user instanceof ServerPlayerEntity)) return stack;
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) user;
@@ -67,10 +70,13 @@ public class GoldenChorusFruitItem extends Item {
         }
         world.playSound(null, user.getX(), user.getY(), user.getZ(), user.getEatSound(stack), SoundCategory.NEUTRAL, 1.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
         user.emitGameEvent(GameEvent.EAT);
-        if (stack.isDamageable()) {
-            stack.damage(1, user, p -> {});
-        } else {
-            stack.decrement(1);
+        ((ServerPlayerEntity) user).getHungerManager().eat(this, stack);
+        if (!serverPlayerEntity.isCreative()) {
+            if (stack.isDamageable()) {
+                stack.damage(1, user, p -> {});
+            } else {
+                stack.decrement(1);
+            }
         }
         return stack;
     }

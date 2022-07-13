@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
@@ -43,7 +44,7 @@ public class ChorusLinksMod implements ModInitializer {
                 Registry.ITEM,
                 new Identifier(MOD_ID, "enchanted_golden_chorus_fruit"),
                 new GoldenChorusFruitItem(
-                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.EPIC).maxDamage(8)));
+                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.EPIC).maxDamage(9)));
 
         Block chorus_link = Registry.register(
                 Registry.BLOCK,

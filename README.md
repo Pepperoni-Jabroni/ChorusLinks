@@ -29,3 +29,6 @@ Chorus Links features & details:
 
 ## Enchanted Golden Chorus Fruits are bound by using on a Chorus Link
 ![](https://i.imgur.com/T81IJe2.png)
+
+## 8-way Chorus Link selector w/ Redstone
+![2022-07-14_20 48 12](https://user-images.githubusercontent.com/17690401/179146400-f602235b-6256-4b0f-bc4c-5e055e5388bd.png)

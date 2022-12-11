@@ -1,10 +1,14 @@
-# Chorus Links
-
-<a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://i.imgur.com/Ol1Tcf8.png" width="149" height="50" title="Fabric API" alt="Fabric API"></a>
-
+<p align="center">
+<img src="https://user-images.githubusercontent.com/17690401/206925446-ffb44b07-b4aa-4faa-9597-389fdbd47b82.png"/>
+</br></br>
 Chorus Links is a vanilla friendly teleportation mod using Chorus Fruits!
+</br></br>
+<a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://i.imgur.com/Ol1Tcf8.png" width="149" height="50" title="Fabric API" alt="Fabric API"></a>
+  </br></br>
+<a href="https://www.curseforge.com/minecraft/mc-mods/chorus-links"><img alt="Curseforge" src="https://cf.way2muchnoise.eu/full_437603_downloads.svg"></a> <a href="https://modrinth.com/mod/chorus-links"><img alt="Modrinth" src="https://img.shields.io/modrinth/dt/chorus-links?label=Modrinth%20Downloads"></a> <a href="https://github.com/Pepperoni-Jabroni/ChorusLinks"><img alt="GitHub" src="https://img.shields.io/github/downloads/Pepperoni-Jabroni/ChorusLinks/total?label=Downloads&logo=github"></a>
+</p>
 
-Chorus Links features & details:
+## 📖 About
 - Adds 2 new items: Golden Chorus Fruit & Enchanted Golden Chorus Fruit
    - Crafted by surrounding a Chorus Fruit with Gold Ingots or Gold Blocks respectively
 - Adds 1 new block: Chorus Link
@@ -15,6 +19,10 @@ Chorus Links features & details:
 - Golden Chorus Fruits do the same across any distance *in the same dimension*
 - Enchanted Golden Chorus Fruit, after being bound (by using/right-clicking on a Chorus Link), will teleport the player to the bounded Chorus Link from any distance  *and across dimensions*. If unbounded, they function the same as a Golden Chorus Fruit. They get 8 uses until they're fully consumed.
 
+## 📸 Media
+<details>
+   <summary>Photos!</summary>
+   
 ## Adds Chorus Link, Golden Chorus Fruit, & Enchanted Golden Chorus Fruit
 ![](https://i.imgur.com/cogHMyr.png)
 
@@ -32,3 +40,11 @@ Chorus Links features & details:
 
 ## 8-way Chorus Link selector w/ Redstone
 ![2022-07-14_20 48 12](https://user-images.githubusercontent.com/17690401/179146400-f602235b-6256-4b0f-bc4c-5e055e5388bd.png)
+   </details>
+   
+   ## ⛓ Dependencies
+- Required:
+   - [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
+   - [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config)
+- Optional:
+   - [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu)

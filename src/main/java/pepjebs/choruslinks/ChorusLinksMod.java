@@ -1,24 +1,25 @@
 package pepjebs.choruslinks;
 
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
-import pepjebs.choruslinks.block.entity.ChorusLinkBlockEntity;
+import pepjebs.choruslinks.block.ChorusLinkLocationsComponent;
 import pepjebs.choruslinks.config.ChorusLinksConfig;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
@@ -28,39 +29,45 @@ public class ChorusLinksMod implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static ChorusLinksConfig CONFIG = null;
 
-    public static BlockEntityType<ChorusLinkBlockEntity> CHORUS_LINK_BLOCK_ENTITY_TYPE;
+    public static final ComponentKey<ChorusLinkLocationsComponent> LINK_LOCATIONS_KEY =
+            ComponentRegistryV3.INSTANCE.getOrCreate(
+                    new Identifier("chorus_links", "link_locations"),
+                    ChorusLinkLocationsComponent.class);
 
     @Override
     public void onInitialize() {
         AutoConfig.register(ChorusLinksConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(ChorusLinksConfig.class).getConfig();
 
-        Registry.register(
-                Registry.ITEM,
+        Item gcf = Registry.register(
+                Registries.ITEM,
                 new Identifier(MOD_ID, "golden_chorus_fruit"),
                 new GoldenChorusFruitItem(
-                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.RARE)));
-        Registry.register(
-                Registry.ITEM,
+                        new Item.Settings().rarity(Rarity.RARE)));
+        Item egcf = Registry.register(
+                Registries.ITEM,
                 new Identifier(MOD_ID, "enchanted_golden_chorus_fruit"),
                 new GoldenChorusFruitItem(
-                        new Item.Settings().group(ItemGroup.MISC).rarity(Rarity.EPIC).maxDamage(9)));
+                        new Item.Settings().rarity(Rarity.EPIC).maxDamage(9)));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(content -> {
+            content.add(gcf);
+            content.add(egcf);
+        });
 
         Block chorus_link = Registry.register(
-                Registry.BLOCK,
+                Registries.BLOCK,
                 new Identifier(MOD_ID, "chorus_link"),
                 new ChorusLinkBlock(
                         FabricBlockSettings
                                 .of(Material.METAL)
                                 .hardness(3.5f)
                                 .requiresTool()));
-        Registry.register(
-                Registry.ITEM,
+        Item cl = Registry.register(
+                Registries.ITEM,
                 new Identifier(MOD_ID, "chorus_link"),
-                new BlockItem(chorus_link, new Item.Settings().group(ItemGroup.DECORATIONS)));
-        CHORUS_LINK_BLOCK_ENTITY_TYPE = Registry.register(
-                Registry.BLOCK_ENTITY_TYPE,
-                new Identifier(MOD_ID, "chorus_link_type"),
-                FabricBlockEntityTypeBuilder.create(ChorusLinkBlockEntity::new, chorus_link).build(null));
+                new BlockItem(chorus_link, new Item.Settings()));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
+            content.add(cl);
+        });
     }
 }

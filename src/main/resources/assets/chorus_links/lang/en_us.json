@@ -4,7 +4,7 @@
    "block.chorus_links.chorus_link": "Chorus Link",
    "item.chorus_links.tooltip.golden_chorus_fruit.unbound": "Unbound",
    "item.chorus_links.tooltip.golden_chorus_fruit.bound_1": "Bound to (%d, %d, %d)",
-   "item.chorus_links.tooltip.golden_chorus_fruit.bound_2": "In Dimension: %s",
+   "item.chorus_links.tooltip.golden_chorus_fruit.bound_2": "In %s",
    "text.autoconfig.chorus_links.title": "Chorus Links Config",
    "text.autoconfig.chorus_links.option.baseChorusFruitLinkRadius": "Base Chorus Fruit Link Radius",
    "text.autoconfig.chorus_links.option.goldenChorusFruitRadiusMultiplier": "Golden Chorus Fruit Radius Multiplier",

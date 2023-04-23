@@ -19,16 +19,22 @@
   "environment": "*",
   "entrypoints": {
     "main": ["pepjebs.choruslinks.ChorusLinksMod"],
-    "modmenu": ["pepjebs.choruslinks.config.ChorusLinksModMenuApiImpl"]
+    "modmenu": ["pepjebs.choruslinks.config.ChorusLinksModMenuApiImpl"],
+    "cardinal-components": ["pepjebs.choruslinks.block.ChorusLinkLocationsComponent"]
   },
   "mixins": [
     "choruslinks.mixins.json"
   ],
+  "custom": {
+    "cardinal-components": [
+      "chorus_links:link_locations"
+    ]
+  },
 
   "depends": {
-    "fabricloader": ">=0.14.6",
+    "fabricloader": ">=0.14.19",
     "fabric": "*",
-    "minecraft": "~1.19",
+    "minecraft": "1.19.4",
     "java": ">=17"
   }
 }

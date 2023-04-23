@@ -3,16 +3,12 @@ package pepjebs.choruslinks.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Pair;
@@ -20,7 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
-import pepjebs.choruslinks.ChorusLinksMod;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.utils.ChorusLinksUtils;
 
@@ -88,31 +83,29 @@ public class GoldenChorusFruitItem extends Item {
             if (stack.getOrCreateNbt().contains(GOLDEN_CHORUS_BIND_POS_TAG)) {
                 int[] blockPos = stack.getOrCreateNbt().getIntArray(GOLDEN_CHORUS_BIND_POS_TAG);
                 if (blockPos.length == 3) {
-                    tooltip.add(MutableText.of(new TranslatableTextContent(
+                    tooltip.add(Text.translatable(
                             "item.chorus_links.tooltip.golden_chorus_fruit.bound_1",
                             blockPos[0],
                             blockPos[1],
                             blockPos[2]
-                    )).formatted(Formatting.GRAY));
+                    ).formatted(Formatting.GRAY));
                 }
                 String boundDim = stack.getOrCreateNbt().getString(GOLDEN_CHORUS_BIND_DIM_TAG);
                 if (boundDim != null && !boundDim.isEmpty()) {
                     String[] parts = boundDim.split(":");
                     if (parts.length >= 2) {
                         String path = parts[1];
-                        tooltip.add(MutableText.of(new TranslatableTextContent(
+                        tooltip.add(Text.translatable(
                                 "item.chorus_links.tooltip.golden_chorus_fruit.bound_2",
                                 Arrays.stream(path.split("_"))
                                         .map(str -> str.substring(0, 1).toUpperCase() + str.substring(1))
                                         .collect(Collectors.joining(" "))
-                        )).formatted(Formatting.GRAY));
+                        ).formatted(Formatting.GRAY));
                     }
                 }
             } else {
                 tooltip.add(
-                        MutableText.of(
-                                new TranslatableTextContent("item.chorus_links.tooltip.golden_chorus_fruit.unbound")
-                                )
+                    Text.translatable("item.chorus_links.tooltip.golden_chorus_fruit.unbound")
                         .formatted(Formatting.GRAY));
             }
         }
@@ -133,7 +126,7 @@ public class GoldenChorusFruitItem extends Item {
                 tag.putIntArray(GOLDEN_CHORUS_BIND_POS_TAG, Arrays.asList(pos.getX(), pos.getY(), pos.getZ()));
                 tag.putString(GOLDEN_CHORUS_BIND_DIM_TAG, context.getWorld().getRegistryKey().getValue().toString());
                 context.getStack().setNbt(tag);
-                return ActionResult.CONSUME;
+                return ActionResult.SUCCESS;
             }
         }
         return super.useOnBlock(context);

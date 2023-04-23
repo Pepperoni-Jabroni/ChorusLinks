@@ -7,11 +7,14 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -19,6 +22,7 @@ import net.minecraft.util.Rarity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
+import pepjebs.choruslinks.block.ChorusLinkBlockEntity;
 import pepjebs.choruslinks.block.ChorusLinkLocationsComponent;
 import pepjebs.choruslinks.config.ChorusLinksConfig;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
@@ -29,6 +33,7 @@ public class ChorusLinksMod implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static ChorusLinksConfig CONFIG = null;
 
+    public static BlockEntityType<ChorusLinkBlockEntity> CHORUS_LINK_ENTITY_TYPE;
     public static final ComponentKey<ChorusLinkLocationsComponent> LINK_LOCATIONS_KEY =
             ComponentRegistryV3.INSTANCE.getOrCreate(
                     new Identifier("chorus_links", "link_locations"),
@@ -50,8 +55,8 @@ public class ChorusLinksMod implements ModInitializer {
                 new GoldenChorusFruitItem(
                         new Item.Settings().rarity(Rarity.EPIC).maxDamage(9)));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(content -> {
-            content.add(gcf);
-            content.add(egcf);
+            content.addAfter(Items.CHORUS_FRUIT, gcf);
+            content.addAfter(gcf, egcf);
         });
 
         Block chorus_link = Registry.register(
@@ -62,6 +67,10 @@ public class ChorusLinksMod implements ModInitializer {
                                 .of(Material.METAL)
                                 .hardness(3.5f)
                                 .requiresTool()));
+        CHORUS_LINK_ENTITY_TYPE = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                new Identifier(MOD_ID, "chorus_link_type"),
+                FabricBlockEntityTypeBuilder.create(ChorusLinkBlockEntity::new, chorus_link).build());
         Item cl = Registry.register(
                 Registries.ITEM,
                 new Identifier(MOD_ID, "chorus_link"),

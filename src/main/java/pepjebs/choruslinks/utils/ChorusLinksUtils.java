@@ -58,13 +58,19 @@ public class ChorusLinksUtils {
 
     public static BlockPos doChorusLinkSearch(ItemStack stack, World world, ServerPlayerEntity user) {
         int radius = ChorusLinksMod.CONFIG == null ? 128 : ChorusLinksMod.CONFIG.baseChorusFruitLinkRadius;
-        boolean useRadius = !(stack.getItem() instanceof GoldenChorusFruitItem);
+        if (stack.getItem() instanceof GoldenChorusFruitItem) {
+            if (stack.hasGlint()) {
+                radius *= ChorusLinksMod.CONFIG.enchantGoldenChorusFruitRadiusMultiplier;
+            } else {
+                radius *= ChorusLinksMod.CONFIG.goldenChorusFruitRadiusMultiplier;
+            }
+        }
         BlockPos nearestChorusLink = null;
         double nearestSoFar = Double.MAX_VALUE;
         for (BlockPos targetPos : world.getComponent(ChorusLinksMod.LINK_LOCATIONS_KEY).getChorusLinkPositions().stream()
                 .filter(p -> p.getDimension() == world.getRegistryKey())
                 .map(GlobalPos::getPos).toList()) {
-            if (!useRadius || (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos))){
+            if (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos)){
                 BlockState state = world.getBlockState(targetPos);
                 if (world.getReceivedStrongRedstonePower(targetPos) != 0) continue;
                 double playerDist = targetPos.getSquaredDistance(user.getPos());

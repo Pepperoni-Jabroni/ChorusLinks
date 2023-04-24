@@ -13,12 +13,12 @@ public class ChorusLinksConfig implements ConfigData {
     public int baseChorusFruitLinkRadius = 128;
 
     @ConfigEntry.Gui.Tooltip()
-    @Comment("The effective radius multiplier of a Golden Chorus Fruit")
-    public double goldenChorusFruitRadiusMultiplier = 4;
+    @Comment("The effective radius multiplier of a Golden Chorus Fruit. Use -1 for inf radius")
+    public int goldenChorusFruitRadiusMultiplier = -1;
 
     @ConfigEntry.Gui.Tooltip()
-    @Comment("The effective radius multiplier of an Enchanted Golden Chorus Fruit")
-    public int enchantGoldenChorusFruitRadiusMultiplier = 16;
+    @Comment("The effective radius multiplier of an Enchanted Golden Chorus Fruit. Use -1 for inf radius")
+    public int enchantGoldenChorusFruitRadiusMultiplier = -1;
 
     @ConfigEntry.Gui.Tooltip()
     @Comment("If 'true', the Enchanted Golden Chorus Fruit is able to teleport players inter-dimensionally")

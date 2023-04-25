@@ -26,8 +26,11 @@ Chorus Links is a vanilla friendly teleportation mod using Chorus Fruits!
 ## Adds Chorus Link, Golden Chorus Fruit, & Enchanted Golden Chorus Fruit
 ![](https://i.imgur.com/cogHMyr.png)
 
+New texture in v1.7.0+:
+![2023-04-25_19 12 53](https://user-images.githubusercontent.com/17690401/234428160-b34d100d-50c4-478c-9579-cad09ac7774f.png)
+
 ## Crafting Chorus Link
-![](https://i.imgur.com/uuXuSUy.png)
+![2023-04-25_19 11 47](https://user-images.githubusercontent.com/17690401/234427835-cd739aa4-6080-4e02-82e9-5902806cd44e.png)
 
 ## Crafting Golden Chorus Fruit
 ![](https://i.imgur.com/3zAMYEw.png)

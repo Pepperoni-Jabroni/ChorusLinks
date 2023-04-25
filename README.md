@@ -12,7 +12,7 @@ Chorus Links is a vanilla friendly teleportation mod using Chorus Fruits!
 - Adds 2 new items: Golden Chorus Fruit & Enchanted Golden Chorus Fruit
    - Crafted by surrounding a Chorus Fruit with Gold Ingots or Gold Blocks respectively
 - Adds 1 new block: Chorus Link
-   - Crafted by surrounding a Netherite Ingot with Purpur Blocks
+   - Crafted by surrounding a Golden Chorus Fruit with Purpur Blocks
 - If a Chorus Fruit is consumed within 128 blocks of a Chorus Link (configurable), the player will always be teleported to the top of the Chorus Link.
 - When multiple Chorus Links are within radius, the closest is always chosen.
    - When strongly powered, a Chorus Link will not be chosen for teleportation when consuming Chorus Fruits. This means you can select which Chorus Link is chosen using Redstone.
@@ -42,7 +42,7 @@ Chorus Links is a vanilla friendly teleportation mod using Chorus Fruits!
 ![2022-07-14_20 48 12](https://user-images.githubusercontent.com/17690401/179146400-f602235b-6256-4b0f-bc4c-5e055e5388bd.png)
    </details>
    
-   ## ⛓ Dependencies
+## ⛓ Dependencies
 - Required:
    - [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
    - [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config)

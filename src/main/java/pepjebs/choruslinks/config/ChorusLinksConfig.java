@@ -23,4 +23,12 @@ public class ChorusLinksConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip()
     @Comment("If 'true', the Enchanted Golden Chorus Fruit is able to teleport players inter-dimensionally")
     public boolean enableEnchantedInterDimensionTeleport = true;
+
+    @ConfigEntry.Gui.Tooltip()
+    @Comment("If 'true', Chorus Links will not be chosen for teleportation if strongly powered by Redstone")
+    public boolean enableRedstonePowerDeselection = true;
+
+    @ConfigEntry.Gui.Tooltip()
+    @Comment("If 'true', the next closest Chorus Link is chosen in cases of the first being obstructed (Else default teleport)")
+    public boolean enableObstructionReselection = false;
 }

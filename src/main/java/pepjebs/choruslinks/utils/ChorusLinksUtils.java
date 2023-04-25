@@ -1,6 +1,7 @@
 package pepjebs.choruslinks.utils;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -60,11 +61,10 @@ public class ChorusLinksUtils {
         int radius = ChorusLinksMod.CONFIG == null ? 128 : ChorusLinksMod.CONFIG.baseChorusFruitLinkRadius;
         boolean useRadius = true;
         if (stack.getItem() instanceof GoldenChorusFruitItem) {
-            if (stack.hasGlint()) {
-                radius *= ChorusLinksMod.CONFIG.enchantGoldenChorusFruitRadiusMultiplier;
-            } else {
-                radius *= ChorusLinksMod.CONFIG.goldenChorusFruitRadiusMultiplier;
-            }
+            radius *=
+                    stack.hasGlint()
+                            ? ChorusLinksMod.CONFIG.enchantGoldenChorusFruitRadiusMultiplier
+                            : ChorusLinksMod.CONFIG.goldenChorusFruitRadiusMultiplier;
             if (radius < 0) {
                 useRadius = false;
             }
@@ -74,9 +74,15 @@ public class ChorusLinksUtils {
         for (BlockPos targetPos : world.getComponent(ChorusLinksMod.LINK_LOCATIONS_KEY).getChorusLinkPositions().stream()
                 .filter(p -> p.getDimension() == world.getRegistryKey())
                 .map(GlobalPos::getPos).toList()) {
+            if (ChorusLinksMod.CONFIG.enableObstructionReselection &&
+                    (world.getBlockState(targetPos.up()).getBlock() != Blocks.AIR
+                    || world.getBlockState(targetPos.up().up()).getBlock() != Blocks.AIR))
+                continue;
+            if (ChorusLinksMod.CONFIG.enableRedstonePowerDeselection
+                    && (world.getReceivedStrongRedstonePower(targetPos) != 0))
+                continue;
             if (!useRadius || (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos))){
                 BlockState state = world.getBlockState(targetPos);
-                if (world.getReceivedStrongRedstonePower(targetPos) != 0) continue;
                 double playerDist = targetPos.getSquaredDistance(user.getPos());
                 if (state.getBlock() instanceof ChorusLinkBlock && nearestSoFar > playerDist) {
                     nearestChorusLink = targetPos;
@@ -109,6 +115,8 @@ public class ChorusLinksUtils {
             SoundEvent soundEvent = SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
             world.playSound(null, user.getX(), user.getY(), user.getZ(), soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
             user.playSound(soundEvent, 1.0F, 1.0F);
+        } else {
+            doVanillaChorusFruitConsumption(usingStack, world, user);
         }
         user.getItemCooldownManager().set(usingStack.getItem(), 20);
     }

@@ -18,6 +18,7 @@ Chorus Links is a vanilla friendly teleportation mod using Chorus Fruits!
    - When strongly powered, a Chorus Link will not be chosen for teleportation when consuming Chorus Fruits. This means you can select which Chorus Link is chosen using Redstone.
 - Golden Chorus Fruits do the same across any distance *in the same dimension*
 - Enchanted Golden Chorus Fruit, after being bound (by using/right-clicking on a Chorus Link), will teleport the player to the bounded Chorus Link from any distance  *and across dimensions*. If unbounded, they function the same as a Golden Chorus Fruit. They get 8 uses until they're fully consumed.
+- As of v1.8.0, Chorus Links will now appear in End City Ships! Its the perfect way to get to that floating ship while making use of the local flora!
 
 ## 📸 Media
 <details>
@@ -40,6 +41,9 @@ New texture in v1.7.0+:
 
 ## Enchanted Golden Chorus Fruits are bound by using on a Chorus Link
 ![](https://i.imgur.com/T81IJe2.png)
+
+# Chorus Link spawned inside of End City Ship
+![2023-05-07_19 13 19](https://user-images.githubusercontent.com/17690401/236707675-46732ca8-2ad3-4ad5-b42a-b12246143592.png)
 
 ## 8-way Chorus Link selector w/ Redstone
 ![2022-07-14_20 48 12](https://user-images.githubusercontent.com/17690401/179146400-f602235b-6256-4b0f-bc4c-5e055e5388bd.png)

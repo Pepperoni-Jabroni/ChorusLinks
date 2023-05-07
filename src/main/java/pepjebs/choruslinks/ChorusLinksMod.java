@@ -6,6 +6,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
@@ -15,6 +16,9 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTables;
+import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -78,5 +82,17 @@ public class ChorusLinksMod implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
             content.add(cl);
         });
+
+        if (CONFIG == null || CONFIG.enableEndCityGoldenChorusSpawn) {
+            LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+                if (id.compareTo(LootTables.END_CITY_TREASURE_CHEST) == 0) {
+                    tableBuilder.pool(
+                            LootPool.builder()
+                                    .with(ItemEntry.builder(gcf).weight(10))
+                                    .build()
+                    );
+                }
+            });
+        }
     }
 }

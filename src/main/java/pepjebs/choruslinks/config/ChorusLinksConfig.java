@@ -31,4 +31,8 @@ public class ChorusLinksConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip()
     @Comment("If 'true', the next closest Chorus Link is chosen in cases of the first being obstructed (Else default teleport)")
     public boolean enableObstructionReselection = false;
+
+    @ConfigEntry.Gui.Tooltip()
+    @Comment("If 'true', End City chests will potentially spawn Golden Chorus Fruits")
+    public boolean enableEndCityGoldenChorusSpawn = true;
 }

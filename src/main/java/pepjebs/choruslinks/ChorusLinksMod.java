@@ -6,6 +6,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.loot.v2.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -19,10 +20,15 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.function.SetCountLootFunction;
+import net.minecraft.loot.provider.number.BinomialLootNumberProvider;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
@@ -88,12 +94,16 @@ public class ChorusLinksMod implements ModInitializer {
                 if (id.compareTo(LootTables.END_CITY_TREASURE_CHEST) == 0) {
                     tableBuilder.pool(
                             LootPool.builder()
-                                    .with(ItemEntry.builder(gcf).weight(10))
+                                    .with(ItemEntry.builder(gcf)
+                                            .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1, 4)))
+                                    )
+                                    .rolls(BinomialLootNumberProvider.create(3,.1f))
                                     .build()
                     );
                     tableBuilder.pool(
                             LootPool.builder()
-                                    .with(ItemEntry.builder(egcf).weight(20))
+                                    .with(ItemEntry.builder(egcf))
+                                    .rolls(BinomialLootNumberProvider.create(3,.05f))
                                     .build()
                     );
                 }

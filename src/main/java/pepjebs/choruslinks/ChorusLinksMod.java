@@ -91,6 +91,11 @@ public class ChorusLinksMod implements ModInitializer {
                                     .with(ItemEntry.builder(gcf).weight(10))
                                     .build()
                     );
+                    tableBuilder.pool(
+                            LootPool.builder()
+                                    .with(ItemEntry.builder(egcf).weight(20))
+                                    .build()
+                    );
                 }
             });
         }

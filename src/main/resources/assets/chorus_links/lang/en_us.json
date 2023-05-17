@@ -19,5 +19,7 @@
    "text.autoconfig.chorus_links.option.enableObstructionReselection": "Enable Obstruction Reselection",
    "text.autoconfig.chorus_links.option.enableObstructionReselection.@Tooltip": "If 'true', the next closest Chorus Link is chosen in cases of the first being obstructed (Else default teleport)",
    "text.autoconfig.chorus_links.option.enableEndCityGoldenChorusSpawn": "Enable End City Golden Chorus Fruit Spawn",
-   "text.autoconfig.chorus_links.option.enableEndCityGoldenChorusSpawn.@Tooltip": "If 'true', End City chests will potentially spawn Golden Chorus Fruits"
+   "text.autoconfig.chorus_links.option.enableEndCityGoldenChorusSpawn.@Tooltip": "If 'true', End City chests will potentially spawn Golden Chorus Fruits",
+   "text.autoconfig.chorus_links.option.limitUnboundChorusFruitsToTheEnd": "Limit Unbound Chorus Fruits To The End",
+   "text.autoconfig.chorus_links.option.limitUnboundChorusFruitsToTheEnd.@Tooltip": "If 'true', Chorus Fruits & Golden Chorus Fruits will only work with Chorus Links inside The End dimension"
 }

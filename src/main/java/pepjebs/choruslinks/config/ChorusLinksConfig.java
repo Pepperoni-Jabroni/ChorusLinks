@@ -35,4 +35,8 @@ public class ChorusLinksConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip()
     @Comment("If 'true', End City chests will potentially spawn Golden Chorus Fruits")
     public boolean enableEndCityGoldenChorusSpawn = true;
+
+    @ConfigEntry.Gui.Tooltip()
+    @Comment("If 'true', Chorus Fruits & Golden Chorus Fruits will only work with Chorus Links inside The End dimension")
+    public boolean limitUnboundChorusFruitsToTheEnd = false;
 }

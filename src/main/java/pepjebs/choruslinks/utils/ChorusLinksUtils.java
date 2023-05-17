@@ -105,6 +105,14 @@ public class ChorusLinksUtils {
     }
 
     public static void doChorusLinkTeleport(ItemStack usingStack, ServerWorld world, ServerPlayerEntity user, BlockPos blockPos) {
+        if (ChorusLinksMod.CONFIG != null && ChorusLinksMod.CONFIG.limitUnboundChorusFruitsToTheEnd
+                && user.getWorld().getRegistryKey() != World.END
+                && (usingStack.getNbt() == null
+                    || !usingStack.getNbt().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_DIM_TAG))) {
+            doVanillaChorusFruitConsumption(usingStack, world, user);
+            user.getItemCooldownManager().set(usingStack.getItem(), 20);
+            return;
+        }
         if (world.getRegistryKey().getValue().toString().compareTo(user.world.getRegistryKey().getValue().toString()) != 0) {
             user.teleport(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), user.getYaw(), user.getPitch());
         }

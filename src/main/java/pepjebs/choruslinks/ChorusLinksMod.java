@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -71,7 +70,7 @@ public class ChorusLinksMod implements ModInitializer {
                 new Identifier(MOD_ID, "chorus_link"),
                 new ChorusLinkBlock(
                         FabricBlockSettings
-                                .of(Material.METAL)
+                                .create()
                                 .hardness(3.5f)
                                 .requiresTool()));
         CHORUS_LINK_ENTITY_TYPE = Registry.register(

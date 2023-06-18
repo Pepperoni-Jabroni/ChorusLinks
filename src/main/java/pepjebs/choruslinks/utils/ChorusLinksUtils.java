@@ -45,11 +45,8 @@ public class ChorusLinksUtils {
                         return new Pair<>(doChorusLinkSearch(stack, world, user), (ServerWorld) world);
                     }
                 }
-                if (!world.isChunkLoaded(blockPos)) {
-                    world.getChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
-                }
-                if (world.isChunkLoaded(blockPos)
-                        && world.getBlockState(blockPos).getBlock() instanceof ChorusLinkBlock) {
+                world.getChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
+                if (world.getBlockState(blockPos).getBlock() instanceof ChorusLinkBlock) {
                     return new Pair<>(blockPos, (ServerWorld) world);
                 }
             }
@@ -81,7 +78,7 @@ public class ChorusLinksUtils {
             if (ChorusLinksMod.CONFIG.enableRedstonePowerDeselection
                     && (world.getReceivedStrongRedstonePower(targetPos) != 0))
                 continue;
-            if (!useRadius || (targetPos.isWithinDistance(user.getPos(), radius) && world.isChunkLoaded(targetPos))){
+            if (!useRadius || (targetPos.isWithinDistance(user.getPos(), radius))){
                 BlockState state = world.getBlockState(targetPos);
                 double playerDist = targetPos.getSquaredDistance(user.getPos());
                 if (state.getBlock() instanceof ChorusLinkBlock && nearestSoFar > playerDist) {
@@ -113,7 +110,7 @@ public class ChorusLinksUtils {
             user.getItemCooldownManager().set(usingStack.getItem(), 20);
             return;
         }
-        if (world.getRegistryKey().getValue().toString().compareTo(user.world.getRegistryKey().getValue().toString()) != 0) {
+        if (world.getRegistryKey().getValue().toString().compareTo(user.getWorld().getRegistryKey().getValue().toString()) != 0) {
             user.teleport(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), user.getYaw(), user.getPitch());
         }
         if (user.hasVehicle()) {

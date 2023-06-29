@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://user-images.githubusercontent.com/17690401/206925446-ffb44b07-b4aa-4faa-9597-389fdbd47b82.png"/>
+<img src="https://github.com/Pepperoni-Jabroni/ChorusLinks/assets/17690401/2885c9b1-e7fd-4c2e-89db-97e7fbbfc523"/>
 </br></br>
 Chorus Links is a vanilla friendly teleportation mod using Chorus Fruits!
 </br></br>

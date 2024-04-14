@@ -76,7 +76,7 @@ public class ChorusLinksMod implements ModInitializer {
         CHORUS_LINK_ENTITY_TYPE = Registry.register(
                 Registries.BLOCK_ENTITY_TYPE,
                 new Identifier(MOD_ID, "chorus_link_type"),
-                FabricBlockEntityTypeBuilder.create(ChorusLinkBlockEntity::new, chorus_link).build());
+                BlockEntityType.Builder.create(ChorusLinkBlockEntity::new, chorus_link).build());
         Item cl = Registry.register(
                 Registries.ITEM,
                 new Identifier(MOD_ID, "chorus_link"),

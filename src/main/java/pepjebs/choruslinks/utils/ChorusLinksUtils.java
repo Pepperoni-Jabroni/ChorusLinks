@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -18,13 +19,20 @@ import pepjebs.choruslinks.ChorusLinksMod;
 import pepjebs.choruslinks.block.ChorusLinkBlock;
 import pepjebs.choruslinks.item.GoldenChorusFruitItem;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.IntStream;
+
 public class ChorusLinksUtils {
 
     public static Pair<BlockPos, ServerWorld> doChorusFruitConsume(ItemStack stack, World world, ServerPlayerEntity user) {
         if (stack.getItem() instanceof GoldenChorusFruitItem && stack.hasGlint()
-                && stack.getOrCreateNbt().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG)) {
-            int[] blockPosCoords = stack.getOrCreateNbt().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG);
-            String boundDim = stack.getOrCreateNbt().getString(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_DIM_TAG);
+                && stack.contains(ChorusLinksMod.GOLDEN_CHORUS_BIND_POS_TAG)) {
+            String blockPosCoordsStr = stack.get(ChorusLinksMod.GOLDEN_CHORUS_BIND_POS_TAG);
+            int[] blockPosCoords = Arrays.stream(blockPosCoordsStr.split(",")).flatMapToInt(
+                    s -> IntStream.of(Integer.parseInt(s))).toArray();
+            String boundDim = stack.get(ChorusLinksMod.GOLDEN_CHORUS_BIND_DIM_TAG);
             ServerWorld destWorld = null;
             if (blockPosCoords.length == 3) {
                 BlockPos blockPos = new BlockPos(blockPosCoords[0], blockPosCoords[1], blockPosCoords[2]);
@@ -69,8 +77,8 @@ public class ChorusLinksUtils {
         BlockPos nearestChorusLink = null;
         double nearestSoFar = Double.MAX_VALUE;
         for (BlockPos targetPos : world.getComponent(ChorusLinksMod.LINK_LOCATIONS_KEY).getChorusLinkPositions().stream()
-                .filter(p -> p.getDimension() == world.getRegistryKey())
-                .map(GlobalPos::getPos).toList()) {
+                .filter(p -> p.dimension() == world.getRegistryKey())
+                .map(GlobalPos::pos).toList()) {
             if (ChorusLinksMod.CONFIG.enableObstructionReselection &&
                     (world.getBlockState(targetPos.up()).getBlock() != Blocks.AIR
                     || world.getBlockState(targetPos.up().up()).getBlock() != Blocks.AIR))
@@ -78,9 +86,9 @@ public class ChorusLinksUtils {
             if (ChorusLinksMod.CONFIG.enableRedstonePowerDeselection
                     && (world.getReceivedStrongRedstonePower(targetPos) != 0))
                 continue;
-            if (!useRadius || (targetPos.isWithinDistance(user.getPos(), radius))){
+            if (!useRadius || (targetPos.isWithinDistance(user.getEntityPos(), radius))){
                 BlockState state = world.getBlockState(targetPos);
-                double playerDist = targetPos.getSquaredDistance(user.getPos());
+                double playerDist = targetPos.getSquaredDistance(user.getEntityPos());
                 if (state.getBlock() instanceof ChorusLinkBlock && nearestSoFar > playerDist) {
                     nearestChorusLink = targetPos;
                     nearestSoFar = playerDist;
@@ -92,8 +100,10 @@ public class ChorusLinksUtils {
 
     public static boolean doesBoundPosEqualBlockPos(ItemStack stack, BlockPos pos) {
         if (stack.getItem() instanceof GoldenChorusFruitItem && stack.hasGlint()
-                && stack.getOrCreateNbt().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG)) {
-            int[] blockPos = stack.getOrCreateNbt().getIntArray(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_POS_TAG);
+                && stack.contains(ChorusLinksMod.GOLDEN_CHORUS_BIND_POS_TAG)) {
+            String blockPosStr = stack.get(ChorusLinksMod.GOLDEN_CHORUS_BIND_POS_TAG);
+            int[] blockPos = Arrays.stream(blockPosStr.split(",")).flatMapToInt(
+                    s -> IntStream.of(Integer.parseInt(s))).toArray();
             if (blockPos.length == 3) {
                 return blockPos[0] == pos.getX() && blockPos[1] == pos.getY() && blockPos[2] == pos.getZ();
             }
@@ -103,15 +113,14 @@ public class ChorusLinksUtils {
 
     public static void doChorusLinkTeleport(ItemStack usingStack, ServerWorld world, ServerPlayerEntity user, BlockPos blockPos) {
         if (ChorusLinksMod.CONFIG != null && ChorusLinksMod.CONFIG.limitUnboundChorusFruitsToTheEnd
-                && user.getWorld().getRegistryKey() != World.END
-                && (usingStack.getNbt() == null
-                    || !usingStack.getNbt().contains(GoldenChorusFruitItem.GOLDEN_CHORUS_BIND_DIM_TAG))) {
+                && user.getEntityWorld().getRegistryKey() != World.END
+                && !usingStack.contains(ChorusLinksMod.GOLDEN_CHORUS_BIND_DIM_TAG)) {
             doVanillaChorusFruitConsumption(usingStack, world, user);
-            user.getItemCooldownManager().set(usingStack.getItem(), 20);
+            user.getItemCooldownManager().set(usingStack, 20);
             return;
         }
-        if (world.getRegistryKey().getValue().toString().compareTo(user.getWorld().getRegistryKey().getValue().toString()) != 0) {
-            user.teleport(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), user.getYaw(), user.getPitch());
+        if (world.getRegistryKey().getValue().toString().compareTo(user.getEntityWorld().getRegistryKey().getValue().toString()) != 0) {
+            user.teleport(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), PositionFlag.DELTA, user.getYaw(), user.getPitch(), true);
         }
         if (user.hasVehicle()) {
             user.stopRiding();
@@ -123,7 +132,7 @@ public class ChorusLinksUtils {
         } else {
             doVanillaChorusFruitConsumption(usingStack, world, user);
         }
-        user.getItemCooldownManager().set(usingStack.getItem(), 20);
+        user.getItemCooldownManager().set(usingStack, 20);
     }
 
     public static void doVanillaChorusFruitConsumption(ItemStack stack, World world, ServerPlayerEntity user) {
@@ -149,6 +158,6 @@ public class ChorusLinksUtils {
         }
 
         // We need "stack.getItem()" instead of "this"
-        ((PlayerEntity) user).getItemCooldownManager().set(stack.getItem(), 20);
+        ((PlayerEntity) user).getItemCooldownManager().set(stack, 20);
     }
 }

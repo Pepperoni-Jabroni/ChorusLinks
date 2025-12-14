@@ -1,7 +1,7 @@
 package pepjebs.choruslinks.mixin;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ChorusFruitItem;
+import net.minecraft.item.consume.TeleportRandomlyConsumeEffect;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -13,24 +13,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pepjebs.choruslinks.utils.ChorusLinksUtils;
 
-@Mixin(ChorusFruitItem.class)
+@Mixin(TeleportRandomlyConsumeEffect.class)
 public class ChorusFruitItemMixin {
 
-    @Inject(method = "finishUsing", at = @At("INVOKE"), cancellable = true)
+    @Inject(method = "onConsume", at = @At("INVOKE"), cancellable = true)
     private void onFinishUsingDoChorusLinkSearch(
-            ItemStack stack,
             World world,
+            ItemStack stack,
             LivingEntity user,
-            CallbackInfoReturnable<ItemStack> cir) {
-        if (world.isClient) return;
+            CallbackInfoReturnable<Boolean> cir) {
+        if (world.isClient()) return;
         if (!(user instanceof ServerPlayerEntity)) return;
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) user;
         BlockPos targetChorusLink = ChorusLinksUtils.doChorusLinkSearch(stack, world, serverPlayerEntity);
         if (targetChorusLink != null) {
             ChorusLinksUtils.doChorusLinkTeleport(stack, (ServerWorld) world, serverPlayerEntity, targetChorusLink);
-            // Basically "super.finishUsing"
-            stack = user.eatFood(world, stack);
-            cir.setReturnValue(stack);
+            cir.setReturnValue(true);
         }
     }
 }

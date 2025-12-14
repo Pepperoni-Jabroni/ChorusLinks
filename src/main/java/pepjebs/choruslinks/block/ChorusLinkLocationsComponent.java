@@ -1,16 +1,18 @@
 package pepjebs.choruslinks.block;
 
-import dev.onyxstudios.cca.api.v3.component.ComponentV3;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.world.World;
+import org.ladysnake.cca.api.v3.component.ComponentV3;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.world.WorldComponentFactoryRegistry;
+import org.ladysnake.cca.api.v3.world.WorldComponentInitializer;
 import pepjebs.choruslinks.ChorusLinksMod;
 
 import java.util.Arrays;
@@ -23,32 +25,32 @@ public class ChorusLinkLocationsComponent implements AutoSyncedComponent, Compon
     private static final Set<GlobalPos> chorusLinkPositions = new HashSet<>();
 
     @Override
-    public void readFromNbt(NbtCompound tag) {
-        int size = tag.getInt("size");
+    public void readData(ReadView readView) {
+        int size = readView.getInt("size", 0);
         for (int i = 0; i < size; i++) {
-            String entry = tag.getString("elem_" + i);
+            String entry = readView.getString("elem_" + i, "");
             String[] entries = entry.split("::");
             String dim = entries[0];
             var coords = Arrays.stream(entries[1].split(",")).map(Integer::parseInt).toList();
             chorusLinkPositions.add(GlobalPos.create(
-                    RegistryKey.of(RegistryKeys.WORLD, new Identifier(dim)),
+                    RegistryKey.of(RegistryKeys.WORLD, Identifier.of(dim)),
                     new BlockPos(coords.get(0), coords.get(1), coords.get(2))));
         }
     }
 
     @Override
-    public void writeToNbt(NbtCompound tag) {
-        tag.putInt("size", chorusLinkPositions.size());
+    public void writeData(WriteView writeView) {
+        writeView.putInt("size", chorusLinkPositions.size());
         List<GlobalPos> posList = chorusLinkPositions.stream().toList();
         for (int i = 0; i < posList.size(); i++) {
-            tag.putString("elem_" + i,
-                    posList.get(i).getDimension().getValue().toString()
+            writeView.putString("elem_" + i,
+                    posList.get(i).dimension().getValue().toString()
                             + "::"
-                            + posList.get(i).getPos().getX()
+                            + posList.get(i).pos().getX()
                             + ","
-                            + posList.get(i).getPos().getY()
+                            + posList.get(i).pos().getY()
                             + ","
-                            + posList.get(i).getPos().getZ());
+                            + posList.get(i).pos().getZ());
         }
     }
 

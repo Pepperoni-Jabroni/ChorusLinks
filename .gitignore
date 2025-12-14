@@ -2,4 +2,4 @@ build
 run
 .gradle
 .idea
-gradle/.DS_Store
+*.DS_Store
